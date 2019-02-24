@@ -17,6 +17,7 @@
 }
 
 .App-header {
+  color: #444;
   background-color: #fff;
   border-radius: 16px;
   border-style: solid;
@@ -28,6 +29,15 @@
   align-items: center;
   justify-content: flex-start;
   font-size: calc(10px + 2vmin);
+}
+
+.spacer-sm {
+  min-width: 7px;
+}
+
+.app-name {
+  align-self: flex-end;
+  margin-bottom: 3px;
 }
 
 @keyframes App-logo-entry {
