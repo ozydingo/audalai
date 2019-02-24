@@ -17,6 +17,11 @@ class App extends Component {
             <img id="user-avatar" src={avatar} alt="user"/>
           </div>
         </header>
+        <div className="app-main">
+          <div className="workspace">
+            Hello, world!
+          </div>
+        </div>
       </div>
     );
   }
