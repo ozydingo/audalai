@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
 import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
 
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
@@ -9,14 +12,38 @@ import teal from '@material-ui/core/colors/teal';
 import red from '@material-ui/core/colors/red';
 import Button from '@material-ui/core/Button'
 
+import { withStyles } from '@material-ui/core/styles';
+
 import logo from './logo.svg';
 import avatar from './images/guest.png'
 import './App.css';
 
+const styles = themm => ({
+  root: {
+    color: 'red',
+    'min-height': '50px',
+    textDecoration: 'inherit',
+    '&:hover': {
+      textDecoration: 'underline',
+    },
+  },
+  appBarSpacer: theme.mixins.toolbar
+});
+
 const theme = createMuiTheme({
   palette: {
-    primary: indigo,
-    secondary: teal,
+    primary: {
+      light: '#44406b',
+      main: '#1a1a40',
+      dark: '#00001b',
+      contrastText: '#fff',
+    },
+    secondary: {
+      light: '#95e4ff',
+      main: '#61b2d8',
+      dark: '#2682a6',
+      contrastText: '#000',
+    },
     error: red,
     // Used by `getContrastText()` to maximize the contrast between the background and
     // the text.
@@ -30,22 +57,27 @@ const theme = createMuiTheme({
 
 class App extends Component {
   render() {
+    const { classes } = this.props;
     return (
       <React.Fragment>
         <CssBaseline />
         <MuiThemeProvider theme={theme}>
-          <div className="App">
-            <header className="App-header">
-              <div className="app-brand">
-                <img src={logo} className="App-logo" alt="logo" />
-                <div className="spacer-sm"></div>
-                <div className="app-name">audalai</div>
-              </div>
-              <div className="account-controls">
-                <img id="user-avatar" src={avatar} alt="user"/>
-              </div>
-            </header>
+          <div className={classes.root}>
+            <AppBar className="App-header">
+              <Toolbar>
+                <div className="app-brand">
+                  <img src={logo} className="App-logo" alt="logo" />
+                  <div className="spacer-sm"></div>
+                  <div className="app-name">audalai</div>
+                </div>
+                <div className="toolbar-spacer">&nbsp;</div>
+                <div className="account-controls">
+                  <img id="user-avatar" src={avatar} alt="user"/>
+                </div>
+              </Toolbar>
+            </AppBar>
             <div className="app-main">
+              <div className={classes.appBarSpacer} />
               <div className="workspace">
                 <div>Hello, world!</div>
                 <Button variant='contained' color='primary'>
@@ -57,6 +89,9 @@ class App extends Component {
                 <Button variant='contained' color='default'>
                   Default
                 </Button>
+                <div className='error'>
+                  Error
+                </div>
               </div>
             </div>
           </div>
@@ -66,4 +101,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default withStyles(styles)(App);
