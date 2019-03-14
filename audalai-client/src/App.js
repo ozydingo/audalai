@@ -2,9 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import indigo from '@material-ui/core/colors/indigo';
@@ -15,9 +12,10 @@ import Paper from '@material-ui/core/Paper';
 
 import { withStyles } from '@material-ui/core/styles';
 
-import logo from './logo.svg';
 import avatar from './images/guest.png'
 import './App.css';
+
+import AppHeader from './AppHeader.js'
 
 const styles = themm => ({
   root: {
@@ -70,19 +68,7 @@ class App extends Component {
         <CssBaseline />
         <MuiThemeProvider theme={theme}>
           <div className={classes.root}>
-            <AppBar className="App-header">
-              <Toolbar>
-                <div className="app-brand">
-                  <img src={logo} className="App-logo" alt="logo" />
-                  <div className="spacer-sm"></div>
-                  <div className="app-name">audalai</div>
-                </div>
-                <div className="toolbar-spacer">&nbsp;</div>
-                <div className="account-controls">
-                  <img id="user-avatar" src={avatar} alt="user"/>
-                </div>
-              </Toolbar>
-            </AppBar>
+            <AppHeader avatar={avatar}/>
             <div className={classes.appBarSpacer} />
             <div className="app-main">
               <Paper className={['workspace', classes.workspace].join(' ')}>
