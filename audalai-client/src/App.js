@@ -11,6 +11,7 @@ import indigo from '@material-ui/core/colors/indigo';
 import teal from '@material-ui/core/colors/teal';
 import red from '@material-ui/core/colors/red';
 import Button from '@material-ui/core/Button'
+import Paper from '@material-ui/core/Paper';
 
 import { withStyles } from '@material-ui/core/styles';
 
@@ -27,7 +28,13 @@ const styles = themm => ({
       textDecoration: 'underline',
     },
   },
-  appBarSpacer: theme.mixins.toolbar
+  appBarSpacer: theme.mixins.toolbar,
+  workspace: {
+    'min-width': '70%',
+    'max-width': '90%',
+    'flex-grow': '1',
+    'padding': '10px',
+  }
 });
 
 const theme = createMuiTheme({
@@ -76,9 +83,9 @@ class App extends Component {
                 </div>
               </Toolbar>
             </AppBar>
+            <div className={classes.appBarSpacer} />
             <div className="app-main">
-              <div className={classes.appBarSpacer} />
-              <div className="workspace">
+              <Paper className={['workspace', classes.workspace].join(' ')}>
                 <div>Hello, world!</div>
                 <Button variant='contained' color='primary'>
                   Primary
@@ -92,7 +99,7 @@ class App extends Component {
                 <div className='error'>
                   Error
                 </div>
-              </div>
+              </Paper>
             </div>
           </div>
         </MuiThemeProvider>
