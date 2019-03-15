@@ -16,6 +16,7 @@ import avatar from './images/guest.png'
 import './App.css';
 
 import AppHeader from './AppHeader.js'
+import Workspace from './Workspace.js'
 
 const styles = themm => ({
   root: {
@@ -70,23 +71,7 @@ class App extends Component {
           <div className={classes.root}>
             <AppHeader avatar={avatar}/>
             <div className={classes.appBarSpacer} />
-            <div className="app-main">
-              <Paper className={['workspace', classes.workspace].join(' ')}>
-                <div>Hello, world!</div>
-                <Button variant='contained' color='primary'>
-                  Primary
-                </Button>
-                <Button variant='contained' color='secondary'>
-                  Secondary
-                </Button>
-                <Button variant='contained' color='default'>
-                  Default
-                </Button>
-                <div className='error'>
-                  Error
-                </div>
-              </Paper>
-            </div>
+            <Workspace classes={this.props.classes}/>
           </div>
         </MuiThemeProvider>
       </React.Fragment>
