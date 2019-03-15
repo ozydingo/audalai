@@ -20,20 +20,14 @@ import Workspace from './Workspace.js'
 
 const styles = themm => ({
   root: {
-    color: 'red',
-    'min-height': '50px',
+    minHeight: '100vh',
+    backgroundColor: '#e6eaf0',
     textDecoration: 'inherit',
-    '&:hover': {
-      textDecoration: 'underline',
-    },
+    display: 'flex',
+    flexFlow: 'column nowrap',
+    alignItems: 'stretch',
   },
   appBarSpacer: theme.mixins.toolbar,
-  workspace: {
-    'min-width': '70%',
-    'max-width': '90%',
-    'flex-grow': '1',
-    'padding': '10px',
-  }
 });
 
 const theme = createMuiTheme({
@@ -71,7 +65,7 @@ class App extends Component {
           <div className={classes.root}>
             <AppHeader avatar={avatar}/>
             <div className={classes.appBarSpacer} />
-            <Workspace classes={this.props.classes}/>
+            <Workspace />
           </div>
         </MuiThemeProvider>
       </React.Fragment>
