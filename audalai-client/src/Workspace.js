@@ -5,6 +5,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 
 import FileList from './FileList'
+import AudalaiApi from './AudalaiApi'
 
 const styles = {
   appMain: {
@@ -22,12 +23,31 @@ const styles = {
 }
 
 class Workspace extends Component {
+  audalaiApi = new AudalaiApi();
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      files: [],
+    }
+  }
+
+  handleFilesData(response) {
+    this.setState({
+      files: response.data,
+    })
+  }
+
+  componentDidMount() {
+    this.audalaiApi.getFiles().then(response => this.handleFilesData(response));
+  }
+
   render() {
     const { classes } = this.props;
     return (
       <div className={classes.appMain}>
         <Paper className={classes.workspace}>
-          <FileList />
+          <FileList files={this.state.files} />
         </Paper>
       </div>
     )

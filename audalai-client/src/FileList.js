@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 class FileList extends Component {
   fileRow(file) {
     return (
-      <div>{ file.name }</div>
+      <div key={file.id}>{ file.name }</div>
     );
   }
 
@@ -14,7 +14,7 @@ class FileList extends Component {
   render() {
     return (
       <div>
-        { this.fileTable([{name: "lorem.wav"}, {name: "ipsum.mp3"}]) }
+        { this.fileTable(this.props.files) }
       </div>
     );
   }
