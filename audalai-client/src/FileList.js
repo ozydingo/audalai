@@ -2,24 +2,56 @@ import React, { Component } from 'react';
 
 import { withStyles } from '@material-ui/core/styles';
 
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
 
 const styles = {
+  fileEntry: {
+    height: '3em',
+  },
   open: {
-    color: 'blue',
+    animationName: 'OpenFile',
+    animationTimingFunction: 'cubic-bezier(0.1,0.7,0.7,0.98)',
+    animationDuration: '0.5s',
+    animationFillMode: 'forwards',
+  },
+  '@keyframes OpenFile': {
+    to: {
+      height: '10em',
+    }
+  },
+  closing: {
+    animationName: 'ClosingFile',
+    animationTimingFunction: 'cubic-bezier(0.1,0.7,0.7,0.98)',
+    animationDuration: '0.5s',
+    animationFillMode: 'forwards',
+  },
+  '@keyframes ClosingFile': {
+    from: {
+      height: '10em',
+    },
+    to: {
+      height: '3em',
+    }
   },
   closed: {
   },
   hidden: {
-    color: 'grey',
+    animationName: 'HiddenFile',
+    animationTimingFunction: 'cubic-bezier(0.1,0.7,0.7,0.98)',
+    animationDuration: '0.5s',
+    animationFillMode: 'forwards',
   },
-  tableCell: {
-    color: 'inherit',
-  }
+  '@keyframes HiddenFile': {
+    from: {
+      opacity: '1',
+      height: '10em',
+    },
+    to: {
+      opacity: '0.1',
+      height: '3em',
+      display: 'none',
+    }
+  },
 };
 
 class FileList extends Component {
@@ -27,58 +59,61 @@ class FileList extends Component {
     super(props);
     this.state = {
       openFile: null,
+      closingFile: null,
     }
   }
 
   clickRow(id) {
     if (this.state.openFile === id) {
-      this.setState({openFile: null});
+      this.setState({
+        openFile: null,
+        closingFile: id,
+      });
     } else {
       this.setState({openFile: id});
     }
   }
 
-  fileRow(file) {
+  fileClasses(file) {
     const { classes } = this.props;
-
-    let className;
+    const isOpen = file.id === this.state.openFile;
+    let fileClasses = [];
     if (this.state.openFile) {
-      className = (file.id === this.state.openFile) ? classes.open : classes.hidden;
+      fileClasses.push(isOpen ? classes.open : classes.hidden);
     } else {
-      className = classes.closed;
+      fileClasses.push(classes.closed);
     }
+    if (!isOpen && file.id === this.state.closingFile) {
+      fileClasses.push(classes.closing);
+    }
+    fileClasses.push(classes.fileEntry);
+    return fileClasses;
+  }
+
+  fileEntry(file) {
+    const fileClasses = this.fileClasses(file);
     return (
-      <TableRow
+      <Paper
           key={file.id}
-          className={className}
+          className={fileClasses.join(' ')}
           onClick={() => this.clickRow(file.id)}
+          square={true}
       >
-        <TableCell className = {classes.tableCell}  component='th' scope='row'>{ file.name }</TableCell>
-        <TableCell className = {classes.tableCell} >{ file.type }</TableCell>
-        <TableCell className = {classes.tableCell} >{ file.created }</TableCell>
-      </TableRow>
+        <div>{ file.name }</div>
+      </Paper>
     );
   }
 
   fileTable(files) {
-    return files.map(file => this.fileRow(file));
+    return files.map(file => this.fileEntry(file));
   }
 
   render() {
     const { classes } = this.props;
     return (
-      <Table>
-        <TableHead>
-          <TableRow className={classes.tableHead} >
-            <TableCell className={classes.columnName}>Name</TableCell>
-            <TableCell>Type</TableCell>
-            <TableCell>Created</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          { this.fileTable(this.props.files) }
-        </TableBody>
-      </Table>
+      <div>
+        { this.fileTable(this.props.files) }
+      </div>
     );
   }
 }
