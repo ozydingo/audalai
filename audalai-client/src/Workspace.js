@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 
 import { withStyles } from '@material-ui/core/styles';
 
-import Button from '@material-ui/core/Button'
 import Paper from '@material-ui/core/Paper';
+
+import FileList from './FileList'
 
 const styles = {
   appMain: {
@@ -26,19 +27,7 @@ class Workspace extends Component {
     return (
       <div className={classes.appMain}>
         <Paper className={classes.workspace}>
-          <div>Hello, world!</div>
-          <Button variant='contained' color='primary'>
-            Primary
-          </Button>
-          <Button variant='contained' color='secondary'>
-            Secondary
-          </Button>
-          <Button variant='contained' color='default'>
-            Default
-          </Button>
-          <div className='error'>
-            Error
-          </div>
+          <FileList />
         </Paper>
       </div>
     )
