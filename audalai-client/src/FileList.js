@@ -112,17 +112,17 @@ class FileList extends Component {
   closeFile(file) {
     this.setState({
       openFile: null,
-      closingFile: file.id,
+      closingFile: file,
     });
   }
 
   openFile(file) {
-    this.setState({openFile: file.id});
+    this.setState({openFile: file});
   }
 
   fileEntry(file) {
     const { classes } = this.props;
-    const isOpen = file.id === this.state.openFile;
+    const isOpen = this.state.openFile && file.id === this.state.openFile.id;
     let fileClasses = [];
     let clickHandler = () => null;
     if (this.state.openFile) {
@@ -135,7 +135,7 @@ class FileList extends Component {
     } else {
       fileClasses.push(classes.closed);
       clickHandler = () => this.openFile(file);
-      if (!isOpen && file.id === this.state.closingFile) {
+      if (!isOpen && this.state.closingFile && file.id === this.state.closingFile.id) {
         fileClasses.push(classes.closing);
       } else {
         fileClasses.push(classes.unhiding);
