@@ -15,6 +15,7 @@ const styles = {
     justifyContent: 'stretch',
   },
   fileEntry: {
+    position: 'relative',
     padding: '7px',
     height: '2em',
   },
@@ -56,43 +57,78 @@ const styles = {
     padding: '0px',
     height: '0px',
     padding: '0px',
-    position: 'relative',
-    animationName: 'HiddenFile',
-    animationTimingFunction: animationTiming,
+  },
+  hiddenAbove: {
+    animationName: 'HiddenAbove',
+    animationTimingFunction: 'ease-out',
     animationDuration: animationDuration,
   },
-  '@keyframes HiddenFile': {
+  '@keyframes HiddenAbove': {
     from: {
-      left: '0px',
-      width: '100%',
+      top: '0px',
       opacity: '1',
       padding: '7px',
       height: '2em',
     },
     to: {
-      left: '-200px',
-      width: '300%',
+      top: '-250px',
       opacity: '0',
       height: '0px',
       padding: '0px',
     }
   },
-  unhiding: {
-    animationName: 'UnhidingFile',
-    animationTimingFunction: animationTiming,
+  hiddenBelow: {
+    animationName: 'HiddenBelow',
+    animationTimingFunction: 'ease-out',
     animationDuration: animationDuration,
   },
-  '@keyframes UnhidingFile': {
+  '@keyframes HiddenBelow': {
     from: {
-      left: '-200px',
-      width: '300%',
+      top: '0px',
+      opacity: '1',
+      padding: '7px',
+      height: '2em',
+    },
+    to: {
+      top: '250px',
+      opacity: '0',
+      height: '0px',
+      padding: '0px',
+    }
+  },
+  unhidingAbove: {
+    animationName: 'UnhidingAbove',
+    animationTimingFunction: 'ease-in',
+    animationDuration: animationDuration,
+  },
+  '@keyframes UnhidingAbove': {
+    from: {
+      top: '-250px',
       opacity: '0',
       height: '0px',
       padding: '0px',
     },
     to: {
-      left: '0px',
-      width: '100%',
+      top: '0px',
+      opacity: '1',
+      padding: '7px',
+      height: '2em',
+    },
+  },
+  unhidingBelow: {
+    animationName: 'UnhidingBelow',
+    animationTimingFunction: 'ease-in',
+    animationDuration: animationDuration,
+  },
+  '@keyframes UnhidingBelow': {
+    from: {
+      top: '250px',
+      opacity: '0',
+      height: '0px',
+      padding: '0px',
+    },
+    to: {
+      top: '0px',
       opacity: '1',
       padding: '7px',
       height: '2em',
@@ -104,43 +140,56 @@ class FileList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      openFile: null,
-      closingFile: null,
+      activeFile: null,
+      activeFileOpen: false,
     }
   }
 
   closeFile(file) {
     this.setState({
-      openFile: null,
-      closingFile: file,
+      activeFile: file,
+      activeFileOpen: false,
     });
   }
 
   openFile(file) {
-    this.setState({openFile: file});
+    this.setState({
+      activeFile: file,
+      activeFileOpen: true,
+    });
   }
 
   fileEntry(file) {
     const { classes } = this.props;
-    const isOpen = this.state.openFile && file.id === this.state.openFile.id;
     let fileClasses = [];
     let clickHandler = () => null;
-    if (this.state.openFile) {
-      if (isOpen) {
-        fileClasses.push(classes.open);
-        clickHandler = () => this.closeFile(file);
+
+    if (this.state.activeFile) {
+      if (this.state.activeFileOpen) {
+        if (file.id === this.state.activeFile.id) {
+          fileClasses.push(classes.open);
+          clickHandler = () => this.closeFile(file);
+        } else if (file.index < this.state.activeFile.index) {
+          fileClasses.push(classes.hiddenAbove, classes.hidden);
+        } else if (file.index > this.state.activeFile.index) {
+          fileClasses.push(classes.hiddenBelow, classes.hidden);
+        }
       } else {
-        fileClasses.push(classes.hidden);
-      }
-    } else {
-      fileClasses.push(classes.closed);
-      clickHandler = () => this.openFile(file);
-      if (!isOpen && this.state.closingFile && file.id === this.state.closingFile.id) {
-        fileClasses.push(classes.closing);
-      } else {
-        fileClasses.push(classes.unhiding);
+        if (file.id === this.state.activeFile.id) {
+          fileClasses.push(classes.closing);
+        } else if (file.index < this.state.activeFile.index) {
+          fileClasses.push(classes.unhidingAbove);
+        } else if (file.index > this.state.activeFile.index) {
+          fileClasses.push(classes.unhidingBelow);
+        }
       }
     }
+
+    if (!this.state.activeFile || !this.state.activeFileOpen) {
+      fileClasses.push(classes.closed);
+      clickHandler = () => this.openFile(file);
+    }
+
     fileClasses.push(classes.fileEntry);
 
     return (
