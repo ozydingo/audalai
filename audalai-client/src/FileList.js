@@ -4,6 +4,8 @@ import { withStyles } from '@material-ui/core/styles';
 
 import Paper from '@material-ui/core/Paper';
 
+import FileContents from './FileContents'
+
 const animationTiming = 'cubic-bezier(1,0,0,1)';
 const animationDuration = '0.5s';
 const styles = {
@@ -18,6 +20,7 @@ const styles = {
     position: 'relative',
     padding: '7px',
     height: '2em',
+    overflow: 'scroll',
   },
   open: {
     zIndex: '2',
@@ -192,6 +195,10 @@ class FileList extends Component {
 
     fileClasses.push(classes.fileEntry);
 
+    const isOpen = this.state.activeFile &&
+      this.state.activeFileOpen &&
+      file.id === this.state.activeFile.id;
+
     return (
       <Paper
           key={file.id}
@@ -199,7 +206,7 @@ class FileList extends Component {
           onClick={clickHandler}
           square={true}
       >
-        <div>{ file.name }</div>
+        <FileContents file={file} open={isOpen} />
       </Paper>
     );
   }
