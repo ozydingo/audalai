@@ -5,10 +5,9 @@ import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 
 import FileContents from './FileContents'
+import { fileAnimationStyles } from './fileListAnimation'
 
-const animationTiming = 'cubic-bezier(1,0,0,1)';
-const animationDuration = '0.5s';
-const styles = {
+const rootStyles = {
   fileListContainer: {
     width: '100%',
     height: '100%',
@@ -22,122 +21,9 @@ const styles = {
     height: '2em',
     overflow: 'scroll',
   },
-  open: {
-    zIndex: '2',
-    flexGrow: '1',
-    animationName: 'OpenFile',
-    animationTimingFunction: animationTiming,
-    animationDuration: animationDuration,
-  },
-  '@keyframes OpenFile': {
-    from: {
-      flexGrow: '0',
-    },
-    to: {
-      flexGrow: '1',
-    }
-  },
-  closing: {
-    animationName: 'ClosingFile',
-    animationTimingFunction: animationTiming,
-    animationDuration: animationDuration,
-  },
-  '@keyframes ClosingFile': {
-    from: {
-      flexGrow: '1',
-      zIndex: '2',
-    },
-    to: {
-      flexGrow: '0',
-      zIndex: '1',
-    }
-  },
-  closed: {
-    flexGrow: '0',
-  },
-  hidden: {
-    opacity: '0',
-    padding: '0px',
-    height: '0px',
-    padding: '0px',
-  },
-  hiddenAbove: {
-    animationName: 'HiddenAbove',
-    animationTimingFunction: 'ease-out',
-    animationDuration: animationDuration,
-  },
-  '@keyframes HiddenAbove': {
-    from: {
-      top: '0px',
-      opacity: '1',
-      padding: '7px',
-      height: '2em',
-    },
-    to: {
-      top: '-250px',
-      opacity: '0',
-      height: '0px',
-      padding: '0px',
-    }
-  },
-  hiddenBelow: {
-    animationName: 'HiddenBelow',
-    animationTimingFunction: 'ease-out',
-    animationDuration: animationDuration,
-  },
-  '@keyframes HiddenBelow': {
-    from: {
-      top: '0px',
-      opacity: '1',
-      padding: '7px',
-      height: '2em',
-    },
-    to: {
-      top: '250px',
-      opacity: '0',
-      height: '0px',
-      padding: '0px',
-    }
-  },
-  unhidingAbove: {
-    animationName: 'UnhidingAbove',
-    animationTimingFunction: 'ease-in',
-    animationDuration: animationDuration,
-  },
-  '@keyframes UnhidingAbove': {
-    from: {
-      top: '-250px',
-      opacity: '0',
-      height: '0px',
-      padding: '0px',
-    },
-    to: {
-      top: '0px',
-      opacity: '1',
-      padding: '7px',
-      height: '2em',
-    },
-  },
-  unhidingBelow: {
-    animationName: 'UnhidingBelow',
-    animationTimingFunction: 'ease-in',
-    animationDuration: animationDuration,
-  },
-  '@keyframes UnhidingBelow': {
-    from: {
-      top: '250px',
-      opacity: '0',
-      height: '0px',
-      padding: '0px',
-    },
-    to: {
-      top: '0px',
-      opacity: '1',
-      padding: '7px',
-      height: '2em',
-    },
-  },
 };
+// TODO: Allow assign order to be reversed; 'height' gets overwritten
+const styles = Object.assign({}, rootStyles, fileAnimationStyles);
 
 class FileList extends Component {
   constructor(props) {
