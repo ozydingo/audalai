@@ -8,18 +8,13 @@ import FileList from './FileList'
 import AudalaiApi from './AudalaiApi'
 
 const styles = {
-  appMain: {
+  workspace: {
     padding: '16px',
     flexGrow: '1',
-    display: 'flex',
-    justifyContent: 'center',
-  },
-  workspace: {
     minWidth: '70%',
     maxWidth: '90%',
-    flexGrow: '1',
-    padding: '10px',
-  }
+    display: 'flex',
+  },
 }
 
 class Workspace extends Component {
@@ -45,10 +40,8 @@ class Workspace extends Component {
   render() {
     const { classes } = this.props;
     return (
-      <div className={classes.appMain}>
-        <Paper className={classes.workspace}>
-          <FileList files={this.state.files} />
-        </Paper>
+      <div className={classes.workspace}>
+        <FileList files={this.state.files} />
       </div>
     )
   }
