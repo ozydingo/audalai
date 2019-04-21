@@ -4,9 +4,6 @@ import classNames from 'classnames';
 
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import indigo from '@material-ui/core/colors/indigo';
-import teal from '@material-ui/core/colors/teal';
-import red from '@material-ui/core/colors/red';
 import Button from '@material-ui/core/Button'
 import Paper from '@material-ui/core/Paper';
 
@@ -33,18 +30,23 @@ const styles = themm => ({
 const theme = createMuiTheme({
   palette: {
     primary: {
-      light: '#44406b',
       main: '#1a1a40',
+      light: '#44406b',
       dark: '#00001b',
       contrastText: '#fff',
     },
     secondary: {
-      light: '#95e4ff',
       main: '#61b2d8',
+      light: '#95e4ff',
       dark: '#2682a6',
       contrastText: '#000',
     },
-    error: red,
+    error: {
+      main: "#f44336",
+      light: "#e57373",
+      dark: "#d32f2f",
+      contrastText: "#fff",
+    },
     // Used by `getContrastText()` to maximize the contrast between the background and
     // the text.
     contrastThreshold: 3,
