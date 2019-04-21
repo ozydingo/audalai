@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 
 import { withStyles } from '@material-ui/core/styles';
 
-import Paper from '@material-ui/core/Paper';
-
 import FileList from './FileList'
 import AudalaiApi from './AudalaiApi'
 
