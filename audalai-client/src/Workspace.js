@@ -21,6 +21,7 @@ class Workspace extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      error: null,
       files: [],
     }
   }
@@ -32,16 +33,29 @@ class Workspace extends Component {
   }
 
   componentDidMount() {
-    this.audalaiApi.getFiles().then(response => this.handleFilesData(response));
+    this.audalaiApi.getFiles().then(
+      response => this.handleFilesData(response)
+    ).catch(err => {
+      this.setState({error: {message: "Uh oh! We couldn't connect to the server. We're looking into it!"}})
+    });
   }
 
   render() {
     const { classes } = this.props;
-    return (
-      <div className={classes.workspace}>
-        <FileList files={this.state.files} />
-      </div>
-    )
+
+    if (this.state.error) {
+      return (
+        <div className={classes.workspace}>
+          <p className={classes.error}>{this.state.error.message}</p>
+        </div>
+      )
+    } else {
+      return (
+        <div className={classes.workspace}>
+          <FileList files={this.state.files} />
+        </div>
+      )
+    }
   }
 }
 
