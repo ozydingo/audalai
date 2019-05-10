@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   get 'home/index'
 
   resources :users
-  resource :sessions, only: [:new, :create, :destroy]
+  resources :sessions, only: :create
 
   get 'signup', to: 'users#new', as: 'signup'
   get 'login', to: 'sessions#new', as: 'login'
