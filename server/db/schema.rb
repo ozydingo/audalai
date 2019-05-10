@@ -10,7 +10,41 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_10_092504) do
+ActiveRecord::Schema.define(version: 2019_05_10_115502) do
+
+  create_table "audio_read_accesses", id: false, force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "audio_id"
+    t.index ["audio_id", "user_id"], name: "index_audio_read_accesses_on_audio_id_and_user_id"
+    t.index ["user_id", "audio_id"], name: "index_audio_read_accesses_on_user_id_and_audio_id"
+  end
+
+  create_table "audio_write_accesses", id: false, force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "audio_id"
+    t.index ["audio_id", "user_id"], name: "index_audio_write_accesses_on_audio_id_and_user_id"
+    t.index ["user_id", "audio_id"], name: "index_audio_write_accesses_on_user_id_and_audio_id"
+  end
+
+  create_table "audios", force: :cascade do |t|
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.boolean "deleted", default: false
+    t.string "name"
+    t.integer "ms"
+    t.integer "cloud_file_id"
+    t.index ["cloud_file_id"], name: "index_audios_on_cloud_file_id"
+  end
+
+  create_table "cloud_files", force: :cascade do |t|
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "storage_type"
+    t.string "uri"
+    t.boolean "deleted", default: false
+    t.boolean "cloud_deleted", default: false
+    t.index ["storage_type"], name: "index_cloud_files_on_storage_type"
+  end
 
   create_table "users", force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false

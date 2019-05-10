@@ -1,0 +1,2 @@
+class CloudFile < ApplicationRecord
+end
