@@ -16,12 +16,8 @@ module Audalai
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
 
-    if Rails.env == "development"
-      config.hosts << "audalai.test"
-    end
-
-    if File.exists?("#{Rails.root}/config/secrets.yaml")
-      secrets = YAML.load(File.read("#{Rails.root}/config/secrets.yaml"))
+    if File.exists?("#{Rails.root}/config/secrets.yml")
+      secrets = YAML.load(File.read("#{Rails.root}/config/secrets.yml"))
       Rails.application.secrets.merge!(secrets["global"].symbolize_keys)
       if secrets.key?(Rails.env)
         Rails.application.secrets.merge!(secrets[Rails.env].symbolize_keys)
