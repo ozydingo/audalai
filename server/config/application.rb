@@ -19,5 +19,13 @@ module Audalai
     if Rails.env == "development"
       config.hosts << "audalai.test"
     end
+
+    if File.exists?("#{Rails.root}/config/secrets.yaml")
+      secrets = YAML.load(File.read("#{Rails.root}/config/secrets.yaml"))
+      Rails.application.secrets.merge!(secrets["global"].symbolize_keys)
+      if secrets.key?(Rails.env)
+        Rails.application.secrets.merge!(secrets[Rails.env].symbolize_keys)
+      end
+    end
   end
 end
