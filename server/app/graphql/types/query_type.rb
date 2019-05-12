@@ -25,11 +25,17 @@ module Types
     end
 
     def audio(id:)
-      Audio.find(id)
+      context[:current_user].audios.find(id)
     end
 
     def audios
-      Audio.all
+      context[:current_user].audios
+    end
+
+    private
+
+    def current_user
+      context[:current_user]
     end
   end
 end
