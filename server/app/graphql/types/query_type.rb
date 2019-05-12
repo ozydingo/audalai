@@ -10,6 +10,8 @@ module Types
 
     field :users, [UserType], null: false
 
+    field :user_count, Integer, null: false
+
     field :audio, AudioType, null: true do
       argument :id, ID, required: true
     end
@@ -22,6 +24,10 @@ module Types
 
     def users
       User.all
+    end
+
+    def user_count
+      User.count
     end
 
     def audio(id:)
