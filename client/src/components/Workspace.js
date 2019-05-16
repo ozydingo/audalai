@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 
 import FileList from './FileList'
-import AudalaiApi from './AudalaiApi'
+import AudalaiApi from '../lib/AudalaiApi'
 
 const styles = {
   workspace: {
