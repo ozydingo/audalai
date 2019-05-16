@@ -9,6 +9,8 @@ import avatar from '../images/guest.png'
 import AppHeader from './AppHeader.js'
 import Workspace from './Workspace.js'
 
+import CONFIG from '../config.js';
+
 const styles = themm => ({
   root: {
     minHeight: '100vh',
