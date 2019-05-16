@@ -5,7 +5,6 @@ import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { withStyles } from '@material-ui/core/styles';
 
 import avatar from './images/guest.png'
-import './App.css';
 
 import AppHeader from './AppHeader.js'
 import Workspace from './Workspace.js'
