@@ -10,7 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_10_115502) do
+ActiveRecord::Schema.define(version: 2019_05_19_191024) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
+  create_table "api_tokens", force: :cascade do |t|
+    t.datetime "created_at"
+    t.datetime "expires_at"
+    t.integer "user_id"
+    t.string "key"
+    t.index ["key"], name: "index_api_tokens_on_key", unique: true
+    t.index ["user_id"], name: "index_api_tokens_on_user_id"
+  end
 
   create_table "audio_read_accesses", id: false, force: :cascade do |t|
     t.integer "user_id"
