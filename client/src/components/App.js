@@ -8,6 +8,7 @@ import avatar from '../images/guest.png'
 
 import AppHeader from './AppHeader.js'
 import Workspace from './Workspace.js'
+import AudalaiApi from '../lib/AudalaiApi'
 
 import CONFIG from '../config.js';
 
@@ -53,6 +54,8 @@ const theme = createMuiTheme({
   },
 });
 
+const audalaiApi = new AudalaiApi();
+
 class App extends Component {
   render() {
     const { classes } = this.props;
@@ -63,7 +66,7 @@ class App extends Component {
           <div className={classes.root}>
             <AppHeader avatar={avatar}/>
             <div className={classes.appBarSpacer} />
-            <Workspace />
+            <Workspace api={audalaiApi} />
           </div>
         </MuiThemeProvider>
       </React.Fragment>

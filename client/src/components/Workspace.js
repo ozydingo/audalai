@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 
 import FileList from './FileList'
-import AudalaiApi from '../lib/AudalaiApi'
 
 const styles = {
   workspace: {
@@ -16,8 +15,6 @@ const styles = {
 }
 
 class Workspace extends Component {
-  audalaiApi = new AudalaiApi();
-
   constructor(props) {
     super(props);
     this.state = {
@@ -33,7 +30,7 @@ class Workspace extends Component {
   }
 
   componentDidMount() {
-    this.audalaiApi.getFiles().then(
+    this.props.api.getFiles().then(
       response => this.handleFilesData(response)
     ).catch(err => {
       this.setState({error: {message: "Uh oh! We couldn't connect to the server. We're looking into it!"}})
