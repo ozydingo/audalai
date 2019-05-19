@@ -24,8 +24,11 @@ class Workspace extends Component {
   }
 
   handleFilesData(response) {
+    const fileData = response.data.data.audios.map((file, index) => (
+      {index: index, ...file}
+    ))
     this.setState({
-      files: response.data,
+      files: fileData,
     })
   }
 
