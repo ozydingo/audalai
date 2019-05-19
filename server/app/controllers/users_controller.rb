@@ -1,6 +1,9 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
+  # save me some possible headache by preventing too many users
+  USER_LIMIT = 100
+
   # GET /users
   def index
     @users = User.all
@@ -21,6 +24,8 @@ class UsersController < ApplicationController
 
   # POST /users
   def create
+    raise "Too many users" if User.count > USER_LIMIT
+
     @user = User.new(user_params)
 
     if @user.save
