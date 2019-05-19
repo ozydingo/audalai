@@ -23,5 +23,10 @@ module Audalai
         Rails.application.secrets.merge!(secrets[Rails.env].symbolize_keys)
       end
     end
+
+    config.action_dispatch.default_headers = {
+      'Access-Control-Allow-Origin' => 'http://audalai.com',
+      'Access-Control-Request-Method' => %w{GET POST OPTIONS}.join(",")
+    }
   end
 end
