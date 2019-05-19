@@ -54,7 +54,7 @@ const theme = createMuiTheme({
   },
 });
 
-const audalaiApi = new AudalaiApi();
+const audalaiApi = new AudalaiApi(CONFIG.API_ENDPOINT);
 
 class App extends Component {
   render() {

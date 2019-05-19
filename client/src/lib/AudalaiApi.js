@@ -1,8 +1,12 @@
 const axios = require('axios');
 
 class AudalaiApi {
+  constructor(endpoint) {
+    this.endpoint = endpoint;
+  }
+
   getFiles() {
-    return axios.post("http://audalai.test/graphql?query=query{audios{id,name}}")
+    return axios.post(`${this.endpoint}/graphql?query=query{audios{id,name}}`)
     // return axios.get("https://us-east1-audalai.cloudfunctions.net/guest-list-files");
     // return Promise.resolve({
     //   data: {data: {audios: [
