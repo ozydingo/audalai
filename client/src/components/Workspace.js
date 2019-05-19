@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-
+import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 
 import FileList from './FileList'
+import AudalaiApi from '../lib/AudalaiApi'
 
 const styles = {
   workspace: {
@@ -57,6 +58,10 @@ class Workspace extends Component {
       )
     }
   }
+}
+
+FileList.propTypes = {
+  api: PropTypes.instanceOf(AudalaiApi),
 }
 
 export default withStyles(styles)(Workspace);

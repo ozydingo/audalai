@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 
 import Paper from '@material-ui/core/Paper';
@@ -105,5 +105,15 @@ class FileList extends Component {
     );
   }
 }
+
+FileList.propTypes = {
+  files: PropTypes.arrayOf(
+    PropTypes.shape({
+      index: PropTypes.number,
+      id: PropTypes.string,
+      name: PropTypes.string,
+    })
+  )
+};
 
 export default withStyles(styles)(FileList);
