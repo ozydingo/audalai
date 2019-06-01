@@ -1,19 +1,15 @@
 module Mutations
   class CreateUser < BaseMutation
-    class AuthProviderSignupData < Types::Base::BaseInputObject
-      argument :email, Types::AuthProviderEmailInput, required: false
-    end
-
     argument :name, String, required: true
-    argument :auth_provider, AuthProviderSignupData, required: false
+    argument :login_credentials, Types::Inputs::LoginCredentials, required: false
 
     type Types::UserType
 
-    def resolve(name: nil, auth_provider: nil)
+    def resolve(name: nil, login_credentials: nil)
       User.create!(
         name: name,
-        email: auth_provider && auth_provider.dig(:email, :email),
-        password: auth_provider && auth_provider.dig(:email, :password),
+        email: login_credentials && login_credentials[:email],
+        password: login_credentials && login_credentials[:password],
       )
     end
   end

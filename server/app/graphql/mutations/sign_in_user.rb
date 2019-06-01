@@ -2,17 +2,17 @@ module Mutations
   class SignInUser < BaseMutation
     null true
 
-    argument :email, Types::AuthProviderEmailInput, required: false
+    argument :login, Types::Inputs::LoginCredentials, required: false
 
     field :token, String, null: true
     field :user, Types::UserType, null:true
 
-    def resolve(email: nil)
-      email.present? or return nil
-      user = User.find_by(email: email[:email]) or return nil
-      user.authenticate(email[:password]) or return nil
+    def resolve(login: nil)
+      login.present? or return nil
+      user = User.find_by(email: login[:email]) or return nil
+      user.authenticate(login[:password]) or return nil
 
-      token = Authenticator.new.generate_token(email[:email], email[:password])
+      token = Authenticator.new.generate_token(login[:email], login[:password])
       context[:session][:token] = token
 
       return {
