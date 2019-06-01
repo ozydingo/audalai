@@ -6,6 +6,7 @@ class GraphqlController < ApplicationController
     query = params[:query]
     operation_name = params[:operationName]
     context = {
+      session: session,
       current_user: current_user,
     }
     result = ServerSchema.execute(query, variables: variables, context: context, operation_name: operation_name)
@@ -18,7 +19,8 @@ class GraphqlController < ApplicationController
   private
 
   def current_user
-    User.find_by(id: 2, name: "Guest User")
+    return nil if session[:token].blank?
+    return Authenticator.new.get_user(session[:token])
   end
 
   # Handle form data, JSON body, or a blank value

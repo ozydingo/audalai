@@ -13,6 +13,7 @@ module Mutations
       user.authenticate(email[:password]) or return nil
 
       token = Authenticator.new.generate_token(email[:email], email[:password])
+      context[:session][:token] = token
 
       return {
         user: user,

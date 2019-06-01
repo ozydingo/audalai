@@ -1,8 +1,8 @@
 require 'test_helper'
 
 class Mutations::SignInUserTest < ActiveSupport::TestCase
-  def perform(args = {})
-    Mutations::SignInUser.new(object: nil, context: { session: {} }).resolve(args)
+  def new_mutation
+    Mutations::SignInUser.new(object: nil, context: { session: {} })
   end
 
   def create_user
@@ -15,8 +15,9 @@ class Mutations::SignInUserTest < ActiveSupport::TestCase
 
   test 'success' do
     user = create_user
+    mutation = new_mutation
 
-    result = perform(
+    result = mutation.resolve(
       email: {
         email: user.email,
         password: user.password
@@ -25,19 +26,20 @@ class Mutations::SignInUserTest < ActiveSupport::TestCase
 
     assert result[:token].present?
     assert_equal result[:user], user
+    assert_equal mutation.context[:session][:token], result[:token]
   end
 
   test 'failure because no credentials' do
-    assert_nil perform
+    assert_nil new_mutation.resolve
   end
 
   test 'failure because wrong email' do
     create_user
-    assert_nil perform(email: { email: 'wrong' })
+    assert_nil new_mutation.resolve(email: { email: 'wrong' })
   end
 
   test 'failure because wrong password' do
     user = create_user
-    assert_nil perform(email: { email: user.email, password: 'wrong' })
+    assert_nil new_mutation.resolve(email: { email: user.email, password: 'wrong' })
   end
 end
