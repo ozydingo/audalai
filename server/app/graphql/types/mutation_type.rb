@@ -1,5 +1,5 @@
-module Types::Base
-  class MutationType < BaseObject
+module Types
+  class MutationType < Base::BaseObject
     field :create_user, mutation: Mutations::CreateUser
     field :sign_in_user, mutation: Mutations::SignInUser
   end
