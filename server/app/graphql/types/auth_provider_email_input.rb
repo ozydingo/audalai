@@ -1,5 +1,5 @@
 module Types
-  class AuthProviderEmailInput < BaseInputObject
+  class AuthProviderEmailInput < Base::BaseInputObject
     graphql_name 'AUTH_PROVIDER_EMAIL'
 
     argument :email, String, required: true

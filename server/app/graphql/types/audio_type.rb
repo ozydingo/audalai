@@ -1,5 +1,5 @@
 module Types
-  class AudioType < Types::BaseObject
+  class AudioType < Types::Base::BaseObject
     description "An audio file"
     field :id, ID, null: false
     field :ms, Integer, null: true

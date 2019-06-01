@@ -1,6 +1,6 @@
 module Mutations
   class CreateUser < BaseMutation
-    class AuthProviderSignupData < Types::BaseInputObject
+    class AuthProviderSignupData < Types::Base::BaseInputObject
       argument :email, Types::AuthProviderEmailInput, required: false
     end
 
