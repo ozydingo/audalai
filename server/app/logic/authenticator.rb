@@ -1,7 +1,6 @@
 class Authenticator
-  def get_user(http_headers = {})
-    token = decode_token(http_headers) or raise AuthenticationError, "Invalid authentication token"
-    User.find(token[:user_id])
+  def get_user(token)
+    User.find(decode_token(token)[:user_id])
   end
 
   def generate_token(email, password)
@@ -12,15 +11,7 @@ class Authenticator
 
   private
 
-  def decode_token(headers)
-    JsonWebToken.decode(http_auth(headers))
-  end
-
-  def http_auth(headers)
-    if headers['Authorization'].blank?
-      raise AuthenticationError, "Missing authorization header"
-    end
-
-    return headers['Authorization'].split(' ').last
+  def decode_token(token)
+    JsonWebToken.decode(token)
   end
 end
