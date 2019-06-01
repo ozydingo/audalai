@@ -12,7 +12,6 @@ module Audalai
     config.load_defaults 6.0
 
     config.autoload_paths << Rails.root.join('lib')
-    config.autoload_paths << Rails.root.join('app', 'logic')
 
     if File.exists?("#{Rails.root}/config/secrets.yml")
       secrets = YAML.load(File.read("#{Rails.root}/config/secrets.yml"))
