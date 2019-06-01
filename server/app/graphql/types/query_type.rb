@@ -31,17 +31,13 @@ module Types
     end
 
     def audio(id:)
-      context[:current_user].audios.find(id)
+      authenticate!
+      return current_user.audios.find(id)
     end
 
     def audios
-      context[:current_user].audios
-    end
-
-    private
-
-    def current_user
-      context[:current_user]
+      authenticate!
+      return current_user.audios
     end
   end
 end
