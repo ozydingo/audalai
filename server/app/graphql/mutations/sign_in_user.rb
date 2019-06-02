@@ -5,7 +5,7 @@ module Mutations
     argument :login, Types::Inputs::LoginCredentials, required: true
 
     field :token, String, null: false
-    field :user, Types::UserType, null: false
+    field :user, Types::SelfType, null: false
 
     def resolve(login: nil)
       token = Authenticator.new.generate_token(login[:email], login[:password])
