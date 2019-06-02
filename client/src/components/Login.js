@@ -36,16 +36,29 @@ class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loginModeValue: 0,
+      loginModeIndex: 0,
+      email: null,
+      password: null,
+      confirmPassword: null,
+      confirmPasswordEntered: false,
     }
   }
 
   usingExistingAccount() {
-    return this.state.loginModeValue === 0;
+    return this.state.loginModeIndex === 0;
   }
 
   creatingNewAccount() {
-    return this.state.loginModeValue === 1;
+    return this.state.loginModeIndex === 1;
+  }
+
+  passwordsMatch() {
+    return this.state.password === this.state.confirmPassword;
+  }
+
+  passwordError() {
+    const err = this.state.confirmPasswordEntered && !this.passwordsMatch();
+    return this.state.confirmPasswordEntered && !this.passwordsMatch();
   }
 
   loginReady() {
@@ -53,11 +66,27 @@ class Login extends Component {
   }
 
   guestReady() {
-    return this.usingExistingAccount()
+    return this.usingExistingAccount();
   }
 
-  handleChange(event, newValue) {
-    this.setState({loginModeValue: newValue})
+  handleLoginModeChange(event, newValue) {
+    this.setState({loginModeIndex: newValue});
+  }
+
+  handleEmailChange(event) {
+    this.setState({email: event.target.value});
+  }
+
+  handlePasswordChange(event) {
+    this.setState({password: event.target.value});
+  }
+
+  handleConfirmPasswordChange(event) {
+    this.setState({confirmPassword: event.target.value});
+  }
+
+  checkPasswordsMatch(event) {
+    this.setState({confirmPasswordEntered: !!event.target.value});
   }
 
   render() {
@@ -76,14 +105,23 @@ class Login extends Component {
         <DialogContent className={classes.dialogContent}>
           <img className={classes.userImage} src={guest} alt="user"/>
           <div className={classes.authForm}>
-            <Tabs value={this.state.loginModeValue} onChange={(e, v) => this.handleChange(e, v)}>
+            <Tabs value={this.state.loginModeIndex} onChange={(e, v) => this.handleLoginModeChange(e, v)}>
               <Tab label="Sign in" />
               <Tab label="Sign up" />
             </Tabs>
-            <TextField label="email" name="email" />
-            <TextField label="password" name="password" type="password" />
+            <TextField label="email" name="email" onChange={(e) => this.handleEmailChange(e)} />
+            <TextField label="password" name="password" type="password" onChange={(e) => this.handlePasswordChange(e)}/>
             <Collapse in={this.creatingNewAccount()}>
-              {(true || this.creatingNewAccount()) && <TextField fullWidth={true} label="confirm password" name="confirm_password" type="password" />}
+              {(true || this.creatingNewAccount()) &&
+                <TextField fullWidth={true}
+                  error={this.passwordError()}
+                  helperText={this.passwordError() && "Passwords don't match"}
+                  label="confirm password"
+                  name="confirm_password"
+                  type="password"
+                  onChange={(e) => this.handleConfirmPasswordChange(e)}
+                  onBlur={(e) => this.checkPasswordsMatch(e)}
+                  />}
             </Collapse>
           </div>
         </DialogContent>
@@ -91,9 +129,18 @@ class Login extends Component {
           {this.guestReady() && <Button onClick={() => {}}>
             Continue as guest
           </Button>}
-          <Button onClick={() => {}} variant="contained" color="primary" disabled={!this.loginReady()}>
-            {this.usingExistingAccount() ? "Login" : "Sign up"}
-          </Button>
+          {this.usingExistingAccount() && <Button
+              onClick={() => {}}
+              variant="contained"
+              color="primary"
+              disabled={!this.loginReady()}
+              >Login</Button>}
+          {this.creatingNewAccount() && <Button
+              onClick={() => {}}
+              variant="contained"
+              color="primary"
+              disabled={!this.loginReady()}
+              >Sign Up</Button>}
         </DialogActions>
       </Dialog>
     )
