@@ -27,5 +27,8 @@ module Audalai
       'Access-Control-Allow-Origin' => 'http://audalai.com',
       'Access-Control-Request-Method' => %w{GET POST OPTIONS}.join(",")
     }
+
+    config.google_cloud.project_id = "audalai"
+    config.google_cloud.keyfile = File.join("config", "credentials", "gcloud_service_account_key.json")
   end
 end

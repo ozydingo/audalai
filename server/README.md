@@ -19,6 +19,7 @@ echo /Applications/Postgres.app/Contents/Versions/latest/bin | sudo tee /etc/pat
 
 1. Run `bundle` in the app directory to install the application gems.
 1. Seed your development database: `rails db:setup` or `rails db:reset`
+1. Generate a google app engine keyfile: `mkdir config/credentials && gcloud --project audalai iam service-accounts keys create config/credentials/gcloud_service_account_key.json --iam-account audalai@appspot.gserviceaccount.com`
 
 ## Hosting & Deployment
 
