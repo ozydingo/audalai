@@ -8,6 +8,7 @@ import avatar from '../images/guest.png'
 
 import AppHeader from './AppHeader.js'
 import Workspace from './Workspace.js'
+import Login from './Login.js'
 import AudalaiApi from '../lib/AudalaiApi'
 
 import CONFIG from '../config.js';
@@ -67,6 +68,8 @@ class App extends Component {
             <AppHeader avatar={avatar}/>
             <div className={classes.appBarSpacer} />
             <Workspace api={audalaiApi} />
+
+            <Login open={true} />
           </div>
         </MuiThemeProvider>
       </React.Fragment>
