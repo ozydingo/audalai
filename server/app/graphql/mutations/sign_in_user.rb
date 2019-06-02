@@ -1,24 +1,23 @@
 module Mutations
   class SignInUser < BaseMutation
-    null true
+    null false
 
-    argument :login, Types::Inputs::LoginCredentials, required: false
+    argument :login, Types::Inputs::LoginCredentials, required: true
 
-    field :token, String, null: true
-    field :user, Types::UserType, null:true
+    field :token, String, null: false
+    field :user, Types::UserType, null: false
 
     def resolve(login: nil)
-      login.present? or return nil
-      user = User.find_by(email: login[:email]) or return nil
-      user.authenticate(login[:password]) or return nil
-
       token = Authenticator.new.generate_token(login[:email], login[:password])
       context[:session][:token] = token
+      user = User.find_by(email: login[:email])
 
       return {
         user: user,
         token: token,
       }
+    rescue AuthenticationError
+      raise GraphQL::ExecutionError, $!.message
     end
   end
 end
