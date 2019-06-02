@@ -1,0 +1,1 @@
+AuthenticationError = Class.new(StandardError)

@@ -1,0 +1,1 @@
+LoginExpiredError = Class.new(AuthenticationError)
