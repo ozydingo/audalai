@@ -4,6 +4,16 @@ class User < ApplicationRecord
 
   validates :email, presence: true, uniqueness: true
 
+  GUEST_EMAIL = "guest@audalai.com"
+
+  def self.guest
+    find_by(email: GUEST_EMAIL)
+  end
+
+  def guest?
+    email == GUEST_EMAIL
+  end
+
   # Override audios association method to ensure that
   # creationg comes with write permission by default.
   def audios

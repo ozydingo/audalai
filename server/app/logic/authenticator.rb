@@ -21,6 +21,11 @@ class Authenticator
     return JsonWebToken.encode({user_id: user.id}, exp: exp)
   end
 
+  def generate_guest_token(exp: Rails.application.config.default_login_expiration.from_now)
+    user = User.guest
+    return JsonWebToken.encode({user_id: user.id}, exp: exp)
+  end
+
   private
 
   def decode_token(token)
