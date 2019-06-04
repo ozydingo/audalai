@@ -58,6 +58,17 @@ const theme = createMuiTheme({
 const audalaiApi = new AudalaiApi(CONFIG.API_ENDPOINT);
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loginRequired: true,
+    }
+  }
+
+  handleLogin() {
+    this.setState({loginRequired: false});
+  }
+
   render() {
     const { classes } = this.props;
     return (
@@ -69,7 +80,10 @@ class App extends Component {
             <div className={classes.appBarSpacer} />
             <Workspace api={audalaiApi} />
 
-            <Login open={true} />
+            <Login
+                open={this.state.loginRequired}
+                api={audalaiApi}
+                onLogin={() => this.handleLogin()} />
           </div>
         </MuiThemeProvider>
       </React.Fragment>

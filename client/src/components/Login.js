@@ -89,6 +89,21 @@ class Login extends Component {
     this.setState({confirmPasswordEntered: !!event.target.value});
   }
 
+  async signInGuest() {
+    const result = await this.props.api.loginAsGuest();
+    this.props.onLogin();
+  }
+
+  async signInUser() {
+    const result = await this.props.api.login(this.state.email, this.state.password);
+    console.log(result);
+    if (result.data.errors) {
+      console.log("Login failed");
+    } else {
+      this.props.onLogin();
+    }
+  }
+
   render() {
     const { classes } = this.props;
     return (
@@ -126,11 +141,11 @@ class Login extends Component {
           </div>
         </DialogContent>
         <DialogActions>
-          {this.guestReady() && <Button onClick={() => {}}>
+          {this.guestReady() && <Button onClick={(e) => {this.signInGuest()}}>
             Continue as guest
           </Button>}
           {this.usingExistingAccount() && <Button
-              onClick={() => {}}
+              onClick={(e) => {this.signInUser()}}
               variant="contained"
               color="primary"
               disabled={!this.loginReady()}
