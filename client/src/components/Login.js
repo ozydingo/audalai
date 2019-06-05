@@ -124,11 +124,17 @@ class Login extends Component {
               <Tab label="Sign in" />
               <Tab label="Sign up" />
             </Tabs>
-            <TextField label="email" name="email" onChange={(e) => this.handleEmailChange(e)} />
-            <TextField label="password" name="password" type="password" onChange={(e) => this.handlePasswordChange(e)}/>
+            <TextField
+                label="email"
+                name="email"
+                onChange={(e) => this.handleEmailChange(e)} />
+            <TextField
+                label="password"
+                name="password"
+                type="password"
+                onChange={(e) => this.handlePasswordChange(e)} />
             <Collapse in={this.creatingNewAccount()}>
-              {(true || this.creatingNewAccount()) &&
-                <TextField fullWidth={true}
+              <TextField fullWidth={true}
                   error={this.passwordError()}
                   helperText={this.passwordError() && "Passwords don't match"}
                   label="confirm password"
@@ -136,7 +142,7 @@ class Login extends Component {
                   type="password"
                   onChange={(e) => this.handleConfirmPasswordChange(e)}
                   onBlur={(e) => this.checkPasswordsMatch(e)}
-                  />}
+                  />
             </Collapse>
           </div>
         </DialogContent>
