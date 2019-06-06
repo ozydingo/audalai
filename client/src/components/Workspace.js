@@ -24,6 +24,9 @@ class Workspace extends Component {
     }
   }
 
+  componendDidUpdate(prevProps) {
+  }
+
   handleFilesData(response) {
     const fileData = response.data.data.audios.map((file, index) => (
       {index: index, ...file}

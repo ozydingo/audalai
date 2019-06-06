@@ -60,8 +60,13 @@ class App extends Component {
     }
   }
 
-  handleLogin() {
-    this.setState({loginRequired: false});
+  handleLogin({token, user}) {
+    this.setState(
+      {
+        user: user,
+        loginRequired: false,
+      }
+    );
   }
 
   render() {
@@ -71,14 +76,16 @@ class App extends Component {
         <CssBaseline />
         <MuiThemeProvider theme={theme}>
           <div className={classes.root}>
-            <AppHeader avatar={avatar}/>
+            <AppHeader avatar={avatar} user={this.state.user} />
             <div className={classes.appBarSpacer} />
-            <Workspace api={audalaiApi} />
+            <Workspace
+                api={audalaiApi}
+                user={this.state.user}/>
 
             <Login
                 open={this.state.loginRequired}
                 api={audalaiApi}
-                onLogin={() => this.handleLogin()} />
+                onLogin={({token, user}) => this.handleLogin({token, user})} />
           </div>
         </MuiThemeProvider>
       </React.Fragment>

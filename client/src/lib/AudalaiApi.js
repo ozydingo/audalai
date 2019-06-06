@@ -6,11 +6,11 @@ class AudalaiApi {
   }
 
   loginAsGuest() {
-    return axios.post(`${this.endpoint}/graphql?query=mutation{signInGuest{token}}`)
+    return axios.post(`${this.endpoint}/graphql?query=mutation{signInGuest{ user{id name nickname} token }}`)
   }
 
   login(email, password) {
-    return axios.post(`${this.endpoint}/graphql?query=mutation{signInUser(login:{email:"${email}", password:"${password}"}){token}}`)
+    return axios.post(`${this.endpoint}/graphql?query=mutation{ signInUser(login:{email:"${email}", password:"${password}"}){ user{id name nickname} token } }`)
   }
 
   logout() {

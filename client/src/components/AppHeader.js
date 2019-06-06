@@ -1,13 +1,13 @@
 import React from 'react';
-
 import { withStyles } from '@material-ui/core/styles';
 
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
 
 import logo from '../images/logo.svg';
 
-const styles = {
+const styles = (theme) => ({
   logo: {
     animationName: 'AppLogoEntry',
     animationTimingFunction: 'cubic-bezier(0.1,0.7,0.7,0.98)',
@@ -16,37 +16,33 @@ const styles = {
     height: '50px',
     pointerEvents: 'none',
   },
-
   appBar: {
     borderRadius: '16px',
   },
-
   brand: {
     display: 'flex',
     justifyContent: 'flex-start',
   },
-
   spacerSm: {
     minWidth: '7px',
   },
-
   name: {
     alignSelf: 'flex-end',
     marginBottom: '3px',
     display: 'flex',
     justifyContent: 'flex-end',
   },
-
   toolbarSpacer: {
     flexGrow: '1',
   },
-
   accountControls: {
     paddingRight: '16px',
   },
-
   userAvatar: {
     maxHeight: '35px',
+  },
+  userName: {
+    color: theme.palette.primary.contrastText,
   },
 
   '@keyframes AppLogoEntry': {
@@ -58,6 +54,16 @@ const styles = {
       top: '0px',
       opacity: '0.95',
     }
+  }
+})
+
+function userName(user) {
+  if (user && user.nickname) {
+    return user.nickname;
+  } else if (user && user.name) {
+    return user.name.split(" ")[0];
+  } else {
+    return "Anonymous";
   }
 }
 
@@ -73,7 +79,10 @@ function AppHeader(props) {
         </div>
         <div className={classes.toolbarSpacer}>&nbsp;</div>
         <div className={classes.accountControls}>
-          <img className={classes.userAvatar} src={props.avatar} alt="user"/>
+          <div className={classes.userImage}>
+            <img className={classes.userAvatar} src={props.avatar} alt="user"/>
+            <Typography className={classes.userName}>{userName(props.user)}</Typography>
+          </div>
         </div>
       </Toolbar>
     </AppBar>

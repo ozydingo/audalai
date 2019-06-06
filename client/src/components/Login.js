@@ -113,8 +113,9 @@ class Login extends Component {
   }
 
   async signInGuest() {
-    await this.props.api.loginAsGuest();
-    this.props.onLogin();
+    const result = await this.props.api.loginAsGuest();
+    const {token, user} = result.data.data.signInGuest;
+    this.props.onLogin({token, user});
   }
 
   async signInUser() {
@@ -122,7 +123,8 @@ class Login extends Component {
     if (result.data.errors) {
       this.handleBadLogin();
     } else {
-      this.props.onLogin();
+      const {token, user} = result.data.data.signInUser;
+      this.props.onLogin({token, user});
     }
   }
 
