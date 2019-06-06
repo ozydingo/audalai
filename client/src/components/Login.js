@@ -49,6 +49,7 @@ class Login extends Component {
       password: null,
       confirmPassword: null,
       confirmPasswordEntered: false,
+      authError: false,
     }
   }
 
@@ -68,9 +69,15 @@ class Login extends Component {
     return this.creatingNewAccount() && this.state.confirmPasswordEntered && !this.passwordsMatch();
   }
 
+  authError() {
+    return this.usingExistingAccount() && this.state.authError;
+  }
+
   helperText() {
     if (this.confirmPasswordError()) {
       return "Passwords don't match";
+    } else if (this.authError()) {
+      return "Login failed";
     }
   }
 
@@ -87,15 +94,19 @@ class Login extends Component {
   }
 
   handleEmailChange(event) {
-    this.setState({email: event.target.value});
+    this.setState({email: event.target.value, authError: false});
   }
 
   handlePasswordChange(event) {
-    this.setState({password: event.target.value});
+    this.setState({password: event.target.value, authError: false});
   }
 
   handleConfirmPasswordChange(event) {
     this.setState({confirmPassword: event.target.value});
+  }
+
+  handleBadLogin() {
+    this.setState({authError: true});
   }
 
   checkPasswordsMatch(event) {
@@ -111,7 +122,7 @@ class Login extends Component {
     const result = await this.props.api.login(this.state.email, this.state.password);
     console.log(result);
     if (result.data.errors) {
-      console.log("Login failed");
+      this.handleBadLogin();
     } else {
       this.props.onLogin();
     }
@@ -138,10 +149,12 @@ class Login extends Component {
               <Tab label="Sign up" />
             </Tabs>
             <TextField
+                error={this.authError()}
                 label="email"
                 name="email"
                 onChange={(e) => this.handleEmailChange(e)} />
             <TextField
+                error={this.authError()}
                 label="password"
                 name="password"
                 type="password"
