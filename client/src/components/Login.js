@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
+import { withTheme } from '@material-ui/core/styles';
 
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -11,11 +12,12 @@ import Collapse from '@material-ui/core/Collapse';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import guest from '../images/guest.svg'
 
-const styles = {
+const styles = (theme) => ({
   dialogContent: {
     display: 'flex',
     flexDirection: 'row',
@@ -24,13 +26,19 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
   },
+  helperText: {
+    fontSize: '0.8rem',
+    textAlign: 'right',
+    marginTop: '1.2em',
+    color: theme.palette.error.main,
+  },
   userImage: {
     width: '30%',
     height: '80%',
     maxWidth: '350px',
     marginRight: '35px',
   },
-};
+});
 
 class Login extends Component {
   constructor(props) {
@@ -56,9 +64,14 @@ class Login extends Component {
     return this.state.password === this.state.confirmPassword;
   }
 
-  passwordError() {
-    const err = this.state.confirmPasswordEntered && !this.passwordsMatch();
-    return this.state.confirmPasswordEntered && !this.passwordsMatch();
+  confirmPasswordError() {
+    return this.creatingNewAccount() && this.state.confirmPasswordEntered && !this.passwordsMatch();
+  }
+
+  helperText() {
+    if (this.confirmPasswordError()) {
+      return "Passwords don't match";
+    }
   }
 
   loginReady() {
@@ -135,14 +148,18 @@ class Login extends Component {
                 onChange={(e) => this.handlePasswordChange(e)} />
             <Collapse in={this.creatingNewAccount()}>
               <TextField fullWidth={true}
-                  error={this.passwordError()}
-                  helperText={this.passwordError() && "Passwords don't match"}
+                  error={this.confirmPasswordError()}
                   label="confirm password"
                   name="confirm_password"
                   type="password"
                   onChange={(e) => this.handleConfirmPasswordChange(e)}
                   onBlur={(e) => this.checkPasswordsMatch(e)}
                   />
+            </Collapse>
+            <Collapse in={this.helperText()}>
+              <Typography className={classes.helperText}>
+                {this.helperText()}
+              </Typography>
             </Collapse>
           </div>
         </DialogContent>
@@ -176,4 +193,4 @@ Login.propTypes = {
   )
 };
 
-export default withStyles(styles)(Login);
+export default withTheme()(withStyles(styles)(Login));
