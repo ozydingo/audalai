@@ -113,13 +113,12 @@ class Login extends Component {
   }
 
   async signInGuest() {
-    const result = await this.props.api.loginAsGuest();
+    await this.props.api.loginAsGuest();
     this.props.onLogin();
   }
 
   async signInUser() {
     const result = await this.props.api.login(this.state.email, this.state.password);
-    console.log(result);
     if (result.data.errors) {
       this.handleBadLogin();
     } else {
