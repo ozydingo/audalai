@@ -24,7 +24,21 @@ class Workspace extends Component {
     }
   }
 
-  componendDidUpdate(prevProps) {
+  componentDidUpdate(prevProps) {
+    console.log("update");
+    if (this.props.user !== prevProps.user) {
+      this.fetchFilesData();
+    }
+  }
+
+  async fetchFilesData() {
+    console.log("Fetching files");
+    this.props.api.getFiles().then(response => {
+      console.log(response);
+      this.handleFilesData(response);
+    }).catch(err => {
+      this.setState({error: {message: "Uh oh! We couldn't connect to the server. We're looking into it!"}})
+    });
   }
 
   handleFilesData(response) {
@@ -34,14 +48,6 @@ class Workspace extends Component {
     this.setState({
       files: fileData,
     })
-  }
-
-  componentDidMount() {
-    this.props.api.getFiles().then(
-      response => this.handleFilesData(response)
-    ).catch(err => {
-      this.setState({error: {message: "Uh oh! We couldn't connect to the server. We're looking into it!"}})
-    });
   }
 
   render() {
