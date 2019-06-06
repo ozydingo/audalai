@@ -13,7 +13,7 @@ import AudalaiApi from '../lib/AudalaiApi'
 
 import CONFIG from '../config.js';
 
-const styles = themm => ({
+const styles = theme => ({
   root: {
     minHeight: '100vh',
     backgroundColor: '#e6eaf0',
