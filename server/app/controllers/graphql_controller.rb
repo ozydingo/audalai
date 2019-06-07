@@ -16,13 +16,19 @@ class GraphqlController < ApplicationController
   private
 
   def get_context
-    userdata = session[:token] ? Authenticator.new.read_token(session[:token]) : {}
+    auth_token = get_authorization
+    userdata = auth_token ? Authenticator.new.read_token(auth_token) : {}
     context = {
       session: session,
       current_user: userdata[:user],
     }
     context[:expired_user] = userdata[:expired_user] if userdata.key?(:expired_user)
     return context
+  end
+
+  def get_authorization
+    return if request.headers['Authorization'].blank?
+    return request.headers['Authorization'].split(' ').last
   end
 
   # Handle form data, JSON body, or a blank value

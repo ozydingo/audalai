@@ -7,7 +7,6 @@ module Mutations
 
     def resolve(login: nil)
       token = Authenticator.new.generate_guest_token
-      context[:session][:token] = token
 
       return {
         user: User.guest,

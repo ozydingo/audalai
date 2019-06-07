@@ -9,7 +9,6 @@ module Mutations
 
     def resolve(login: nil)
       token = Authenticator.new.generate_token(login[:email], login[:password])
-      context[:session][:token] = token
       user = User.find_by(email: login[:email])
 
       return {
