@@ -63,9 +63,11 @@ Rails.application.configure do
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
-  config.action_dispatch.default_headers = {
-    'Access-Control-Allow-Origin' => 'http://localhost:3000',
-    'Access-Control-Request-Method' => %w{GET POST OPTIONS}.join(",")
-  }
+  config.middleware.insert_before 0, Rack::Cors do
+    allow do
+      origins 'http://localhost:3000'
+      resource '*', headers: :any, methods: [:get, :post, :options]
+    end
+  end
 
 end

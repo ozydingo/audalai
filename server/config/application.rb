@@ -23,10 +23,12 @@ module Audalai
 
     config.default_login_expiration = 24.hours
 
-    config.action_dispatch.default_headers = {
-      'Access-Control-Allow-Origin' => 'http://audalai.com',
-      'Access-Control-Request-Method' => %w{GET POST OPTIONS}.join(",")
-    }
+    config.middleware.insert_before 0, Rack::Cors do
+      allow do
+        origins 'http://audalai.com'
+        resource '*', headers: :any, methods: [:get, :post, :options]
+      end
+    end
 
     config.google_cloud.project_id = "audalai"
     config.google_cloud.keyfile = File.join("config", "credentials", "gcloud_service_account_key.json")
