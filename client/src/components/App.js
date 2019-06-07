@@ -60,7 +60,7 @@ class App extends Component {
     }
   }
 
-  handleLogin({token, user}) {
+  handleLogin({ user }) {
     this.setState(
       {
         user: user,
@@ -85,7 +85,7 @@ class App extends Component {
             <Login
                 open={this.state.loginRequired}
                 api={audalaiApi}
-                onLogin={({token, user}) => this.handleLogin({token, user})} />
+                onLogin={({ user }) => this.handleLogin({ user })} />
           </div>
         </MuiThemeProvider>
       </React.Fragment>
