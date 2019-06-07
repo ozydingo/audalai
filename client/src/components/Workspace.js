@@ -24,9 +24,8 @@ class Workspace extends Component {
     }
   }
 
-  componentDidUpdate(prevProps) {
-    console.log("update");
-    if (this.props.user !== prevProps.user) {
+  componentDidMount() {
+    if (this.props.user) {
       this.fetchFilesData();
     }
   }

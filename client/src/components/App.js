@@ -79,8 +79,9 @@ class App extends Component {
             <AppHeader avatar={avatar} user={this.state.user} />
             <div className={classes.appBarSpacer} />
             <Workspace
+                key={this.state.user}
                 api={audalaiApi}
-                user={this.state.user}/>
+                user={this.state.user} />
 
             <Login
                 open={this.state.loginRequired}
