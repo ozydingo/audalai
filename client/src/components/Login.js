@@ -170,7 +170,7 @@ class Login extends Component {
                   onBlur={(e) => this.checkPasswordsMatch(e)}
                   />
             </Collapse>
-            <Collapse in={this.helperText()}>
+            <Collapse in={!!this.helperText()}>
               <Typography className={classes.helperText}>
                 {this.helperText()}
               </Typography>
