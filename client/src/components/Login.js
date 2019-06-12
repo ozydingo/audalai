@@ -49,6 +49,7 @@ class Login extends Component {
       confirmPassword: null,
       confirmPasswordEntered: false,
       authError: false,
+      createUserError: false,
     }
   }
 
@@ -72,11 +73,17 @@ class Login extends Component {
     return this.usingExistingAccount() && this.state.authError;
   }
 
+  createUserError() {
+    return this.creatingNewAccount() && this.state.createUserError;
+  }
+
   helperText() {
     if (this.confirmPasswordError()) {
       return "Passwords don't match";
     } else if (this.authError()) {
       return "Login failed";
+    } else if (this.createUserError()) {
+      return "Something went wrong";
     }
   }
 
@@ -93,19 +100,32 @@ class Login extends Component {
   }
 
   handleEmailChange(event) {
-    this.setState({email: event.target.value, authError: false});
+    this.setState({email: event.target.value});
+    this.clearErrors();
   }
 
   handlePasswordChange(event) {
-    this.setState({password: event.target.value, authError: false});
+    this.setState({password: event.target.value});
+    this.clearErrors();
   }
 
   handleConfirmPasswordChange(event) {
     this.setState({confirmPassword: event.target.value});
   }
 
+  clearErrors() {
+    this.setState({
+      authError: false,
+      createUserError: false,
+    })
+  }
+
   handleBadLogin() {
     this.setState({authError: true});
+  }
+
+  handleCreateUserError() {
+    this.setState({createUserError: true})
   }
 
   checkPasswordsMatch(event) {
@@ -123,6 +143,17 @@ class Login extends Component {
     if (!user) {
       console.log("Login failed");
       this.handleBadLogin();
+    } else {
+      console.log("User: ", user);
+      this.props.onLogin({ user });
+    }
+  }
+
+  async createUser() {
+    const user = await this.props.api.createUser("", this.state.email, this.state.password);
+    if (!user) {
+      console.log("Create user failed");
+      this.handleCreateUserError();
     } else {
       console.log("User: ", user);
       this.props.onLogin({ user });
@@ -188,7 +219,7 @@ class Login extends Component {
               disabled={!this.loginReady()}
               >Login</Button>}
           {this.creatingNewAccount() && <Button
-              onClick={() => {}}
+              onClick={(e) => {this.createUser()}}
               variant="contained"
               color="primary"
               disabled={!this.loginReady()}

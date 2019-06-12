@@ -34,6 +34,15 @@ class AudalaiApi {
     });
   }
 
+  createUser(name, email, password) {
+    return axios.post(
+      `${this.endpoint}/graphql?query=mutation{createUser(name:"${name}", loginCredentials:{email:"${email}", password:"${password}"}){id}}`
+    ).then(result => {
+      console.log(result);
+      return this.login(email, password);
+    });
+  }
+
   getFiles() {
     return axios.post(
       `${this.endpoint}/graphql?query=query{audios{id,name}}`,
