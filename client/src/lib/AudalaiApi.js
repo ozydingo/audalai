@@ -10,7 +10,7 @@ class AudalaiApi {
     return axios.post(
       `${this.endpoint}/graphql?query=mutation{signInGuest{ user{id name nickname} token }}`
     ).then(result => {
-      const { signInGuest: { token, user } } = this.handleLoginResponse(result);
+      const { signInGuest: { token, user }  = {}} = this.handleLoginResponse(result);
       this.token = token;
       return user;
     });
@@ -20,7 +20,7 @@ class AudalaiApi {
     return axios.post(
       `${this.endpoint}/graphql?query=mutation{ signInUser(login:{email:"${email}", password:"${password}"}){ user{id name nickname} token } }`
     ).then(result => {
-      const { signInUser: { token, user } } = this.handleLoginResponse(result);
+      const { signInUser: { token, user } = {}} = this.handleLoginResponse(result);
       this.token = token;
       return user;
     });
