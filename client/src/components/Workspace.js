@@ -68,7 +68,7 @@ class Workspace extends Component {
   }
 }
 
-FileList.propTypes = {
+Workspace.propTypes = {
   api: PropTypes.instanceOf(AudalaiApi),
 }
 
