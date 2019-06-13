@@ -1,5 +1,5 @@
 import React from 'react';
-import { withStyles } from '@material-ui/styles';
+import { makeStyles } from '@material-ui/styles';
 
 import Paper from '@material-ui/core/Paper';
 import FileContents from './FileContents'
@@ -16,9 +16,10 @@ const rootStyles = {
 };
 // TODO: Allow assign order to be reversed; 'height' gets overwritten
 const styles = Object.assign({}, rootStyles, fileAnimationStyles);
+const useStyles = makeStyles(styles);
 
 function FileEntry(props) {
-  const { classes } = props;
+  const classes = useStyles();
   let fileClasses = [];
   let clickHandler = () => null;
 
@@ -66,4 +67,4 @@ function FileEntry(props) {
   );
 }
 
-export default withStyles(styles)(FileEntry);
+export default FileEntry;
