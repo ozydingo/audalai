@@ -18,6 +18,24 @@ const styles = {
 function Workspace(props) {
   const { classes } = props;
   const [error, setError] = useState(null);
+  const files = useFiles(props, setError);
+
+  if (error) {
+    return (
+      <div className={classes.workspace}>
+        <p className={classes.error}>{error.message}</p>
+      </div>
+    )
+  } else {
+    return (
+      <div className={classes.workspace}>
+        <FileList files={files} />
+      </div>
+    )
+  }
+}
+
+function useFiles(props, setError) {
   const [files, setFiles] = useState([]);
 
   async function fetchFilesData() {
@@ -43,19 +61,7 @@ function Workspace(props) {
     }
   }, [props.user]);
 
-  if (error) {
-    return (
-      <div className={classes.workspace}>
-        <p className={classes.error}>{error.message}</p>
-      </div>
-    )
-  } else {
-    return (
-      <div className={classes.workspace}>
-        <FileList files={files} />
-      </div>
-    )
-  }
+  return files;
 }
 
 Workspace.propTypes = {
