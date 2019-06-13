@@ -1,17 +1,17 @@
 import React, { Component, useState } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/styles';
+import { makeStyles } from '@material-ui/styles';
 
 import FileEntry from './FileEntry'
 
-const styles = {
+const useStyles = makeStyles({
   fileListContainer: {
     width: '100%',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'stretch',
   },
-};
+});
 
 function FileList(props) {
   const [activeFile, setActiveFile] = useState(null);
@@ -27,7 +27,7 @@ function FileList(props) {
     setActiveFileOpen(true);
   }
 
-  const { classes } = props;
+  const classes = useStyles();
   return (
     <div className = {classes.fileListContainer} >
       { props.files.map(file => {
@@ -54,4 +54,4 @@ FileList.propTypes = {
   )
 };
 
-export default withStyles(styles)(FileList);
+export default FileList;
