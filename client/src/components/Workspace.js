@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 
@@ -15,56 +15,46 @@ const styles = {
   },
 }
 
-class Workspace extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      error: null,
-      files: [],
-    }
-  }
+function Workspace(props) {
+  const { classes } = props;
+  const [error, setError] = useState(null);
+  const [files, setFiles] = useState([]);
 
-  componentDidMount() {
-    if (this.props.user) {
-      this.fetchFilesData();
-    }
-  }
-
-  async fetchFilesData() {
+  async function fetchFilesData() {
     console.log("Fetching files");
-    this.props.api.getFiles().then(response => {
+    props.api.getFiles().then(response => {
       console.log(response);
-      this.handleFilesData(response);
+      handleFilesData(response);
     }).catch(err => {
-      this.setState({error: {message: "Uh oh! We couldn't connect to the server. We're looking into it!"}})
+      setError({message: "Uh oh! We couldn't connect to the server. We're looking into it!"});
     });
   }
 
-  handleFilesData(response) {
+  function handleFilesData(response) {
     const fileData = response.data.data.audios.map((file, index) => (
       {index: index, ...file}
     ))
-    this.setState({
-      files: fileData,
-    })
+    setFiles(fileData);
   }
 
-  render() {
-    const { classes } = this.props;
-
-    if (this.state.error) {
-      return (
-        <div className={classes.workspace}>
-          <p className={classes.error}>{this.state.error.message}</p>
-        </div>
-      )
-    } else {
-      return (
-        <div className={classes.workspace}>
-          <FileList files={this.state.files} />
-        </div>
-      )
+  useEffect(() => {
+    if (props.user) {
+      fetchFilesData();
     }
+  }, [props.user]);
+
+  if (error) {
+    return (
+      <div className={classes.workspace}>
+        <p className={classes.error}>{error.message}</p>
+      </div>
+    )
+  } else {
+    return (
+      <div className={classes.workspace}>
+        <FileList files={files} />
+      </div>
+    )
   }
 }
 
