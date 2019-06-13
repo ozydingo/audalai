@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 
 import FileList from './FileList'
 import AudalaiApi from '../lib/AudalaiApi'
 
-const styles = {
+const useStyles = makeStyles({
   workspace: {
     padding: '16px',
     flexGrow: '1',
@@ -13,10 +13,10 @@ const styles = {
     maxWidth: '90%',
     display: 'flex',
   },
-}
+});
 
 function Workspace(props) {
-  const { classes } = props;
+  const classes = useStyles();
   const [error, setError] = useState(null);
   const files = useFiles(props, setError);
 
@@ -68,4 +68,4 @@ Workspace.propTypes = {
   api: PropTypes.instanceOf(AudalaiApi),
 }
 
-export default withStyles(styles)(Workspace);
+export default Workspace;
