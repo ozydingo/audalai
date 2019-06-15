@@ -23,15 +23,36 @@ echo /Applications/Postgres.app/Contents/Versions/latest/bin | sudo tee /etc/pat
 
 ## Hosting & Deployment
 
-Audalai is hosted on Google Cloud. To interact with the project via the CLI, first install the gcloud cli:
+Audalai is hosted on Heroku. To interact with the project via the CLI, install the heroku CLI.
+
+The application is set up to have Rails serve the static front-end via the `public` folder. To do this, we have added two buildpacks to our Heroku project:
 
 ```
-curl https://sdk.cloud.google.com | bash
-exec -l $SHELL
-gcloud init
+heroku buildpacks:add heroku/nodejs --index 1
+heroku buildpacks:add heroku/ruby --index 2
 ```
 
-Make sure bin folder (e.g. `$HOME/google-cloud-sdk/bin`, or wherever you installed gsutil to, is in path)
+To deploy, first make sure you have a heroku origin set up
 
-Deploy: `gcloud --project audalai app deploy --no-promote`
-Migrate the db: `CLOUDSDK_CORE_PROJECT=audalai bundle exec rake appengine:exec -- bundle exec rake db:migrate`
+```
+heroku git:remote -a audalai
+```
+
+Then simply push to the heroku origin:
+
+```
+git push heroku master
+```
+
+To deploy a non-master branch, you have to deploy it to push it to heroku/master:
+
+```
+git push heroku branch:master
+```
+
+If deploying for the first time, prepare the database
+
+```
+heroku run rake db:migrate
+heroku run rake db:seed
+```
