@@ -1,11 +1,11 @@
 {
-  "name": "server",
-  "private": true,
-  "dependencies": {
-    "@rails/ujs": "^6.0.0-alpha",
-    "turbolinks": "^5.2.0",
-    "@rails/activestorage": "^6.0.0-alpha",
-    "@rails/actioncable": "^6.0.0-alpha"
+  "name": "audalai",
+  "engines": {
+    "node": "11.10.0"
   },
-  "version": "0.1.0"
+  "scripts": {
+    "build": "cd client && npm install && npm run build && cd ..",
+    "deploy": "cp -a client/build/. public/",
+    "postinstall": "npm run build && npm run deploy && echo 'Client built!'"
+  }
 }
