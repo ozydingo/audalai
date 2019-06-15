@@ -241,7 +241,6 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
-    sqlite3 (1.4.1)
     stackdriver (0.15.3)
       google-cloud-debugger (~> 0.32)
       google-cloud-error_reporting (~> 0.30)
@@ -291,7 +290,6 @@ DEPENDENCIES
   selenium-webdriver
   spring
   spring-watcher-listen (~> 2.0.0)
-  sqlite3 (~> 1.4)
   tzinfo-data
   web-console (>= 3.3.0)
   webdrivers
