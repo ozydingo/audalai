@@ -30,6 +30,9 @@ module Audalai
       end
     end
 
+    config.public_file_server.enabled = true
+    config.assets.compile = false
+
     config.google_cloud.project_id = "audalai"
     config.google_cloud.keyfile = File.join("config", "credentials", "gcloud_service_account_key.json")
   end
