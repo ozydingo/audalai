@@ -10,6 +10,7 @@ module Audalai
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.0
+    config.assets.enabled = false
 
     config.autoload_paths << Rails.root.join('lib')
 
