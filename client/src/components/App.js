@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import Toolbar from '@material-ui/core/Toolbar';
 
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/styles';
 
 import avatar from '../images/guest.png'
 
@@ -22,7 +23,6 @@ const styles = theme => ({
     flexFlow: 'column nowrap',
     alignItems: 'stretch',
   },
-  appBarSpacer: theme.mixins.toolbar,
 });
 
 const theme = createMuiTheme({
@@ -77,7 +77,7 @@ class App extends Component {
         <MuiThemeProvider theme={theme}>
           <div className={classes.root}>
             <AppHeader avatar={avatar} user={this.state.user} />
-            <div className={classes.appBarSpacer} />
+            <Toolbar />
             <Workspace
                 key={this.state.user}
                 api={audalaiApi}
