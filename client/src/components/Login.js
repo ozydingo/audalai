@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import { withTheme } from '@material-ui/core/styles';
 
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -238,4 +237,4 @@ Login.propTypes = {
   )
 };
 
-export default withTheme()(withStyles(styles)(Login));
+export default withStyles(styles)(Login);
