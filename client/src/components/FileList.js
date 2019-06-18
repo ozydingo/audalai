@@ -33,6 +33,7 @@ function FileList(props) {
       { props.files.map(file => {
         return (
           <FileEntry
+              key={file.id}
               file={file}
               activeFile={activeFile}
               activeFileOpen={activeFileOpen}
