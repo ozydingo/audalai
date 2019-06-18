@@ -10,6 +10,7 @@ module Audalai
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.0
+    config.assets.enabled = false
 
     config.autoload_paths << Rails.root.join('lib')
 
@@ -25,10 +26,13 @@ module Audalai
 
     config.middleware.insert_before 0, Rack::Cors do
       allow do
-        origins 'http://audalai.com'
+        origins '*'
         resource '*', headers: :any, methods: [:get, :post, :options]
       end
     end
+
+    config.public_file_server.enabled = true
+    config.assets.compile = false
 
     config.google_cloud.project_id = "audalai"
     config.google_cloud.keyfile = File.join("config", "credentials", "gcloud_service_account_key.json")

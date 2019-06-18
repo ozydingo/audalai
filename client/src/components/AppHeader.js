@@ -1,5 +1,5 @@
 import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 
 import logo from '../images/logo.svg';
 
-const styles = (theme) => ({
+const useStyles = makeStyles(theme => ({
   logo: {
     animationName: 'AppLogoEntry',
     animationTimingFunction: 'cubic-bezier(0.1,0.7,0.7,0.98)',
@@ -55,7 +55,7 @@ const styles = (theme) => ({
       opacity: '0.95',
     }
   }
-})
+}));
 
 function userName(user) {
   if (user && user.nickname) {
@@ -68,7 +68,8 @@ function userName(user) {
 }
 
 function AppHeader(props) {
-  const { classes } = props;
+  const classes = useStyles();
+
   return (
     <AppBar className={classes.appBar}>
       <Toolbar>
@@ -89,4 +90,4 @@ function AppHeader(props) {
   );
 }
 
-export default withStyles(styles)(AppHeader);
+export default AppHeader;

@@ -30,3 +30,5 @@
 
 # Ignore third-party credential files
 /config/credentials
+
+/public/*

@@ -1,5 +1,4 @@
 import React from 'react'
-import { withStyles } from '@material-ui/core/styles';
 
 import Fade from '@material-ui/core/Fade';
 
@@ -14,4 +13,4 @@ function FileContents(props) {
   );
 }
 
-export default withStyles({})(FileContents);
+export default FileContents;
