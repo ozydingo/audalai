@@ -4,8 +4,11 @@ import { makeStyles } from '@material-ui/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
+import CONFIG from '../config.js'
 
 import logo from '../images/logo.svg';
+
+const titleText = CONFIG.ENV === "production" ? "audalai" : "development"
 
 const useStyles = makeStyles(theme => ({
   logo: {
@@ -76,7 +79,7 @@ function AppHeader(props) {
         <div className={classes.brand}>
           <img src={logo} className={classes.logo} alt="logo" />
           <div className={classes.spacerSm}></div>
-          <div className={classes.name}>audalai</div>
+          <div className={classes.name}>{ titleText }</div>
         </div>
         <div className={classes.toolbarSpacer}>&nbsp;</div>
         <div className={classes.accountControls}>
