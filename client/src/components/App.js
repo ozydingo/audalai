@@ -1,9 +1,8 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
-
-import { withStyles } from '@material-ui/styles';
+import { makeStyles } from '@material-ui/styles';
 
 import avatar from '../images/guest.png'
 
@@ -14,7 +13,7 @@ import AudalaiApi from '../lib/AudalaiApi'
 
 import CONFIG from '../config.js';
 
-const styles = theme => ({
+const useStyles = makeStyles(theme => ({
   root: {
     minHeight: '100vh',
     backgroundColor: '#e6eaf0',
@@ -23,7 +22,7 @@ const styles = theme => ({
     flexFlow: 'column nowrap',
     alignItems: 'stretch',
   },
-});
+}));
 
 const theme = createMuiTheme({
   palette: {
@@ -52,46 +51,36 @@ const theme = createMuiTheme({
 
 const audalaiApi = new AudalaiApi(CONFIG.API_ENDPOINT);
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      loginRequired: true,
-    }
+function App(props) {
+  const [user, setUser] = useState(null);
+  const [loginRequired, setLoginRequired] = useState(true);
+  const classes = useStyles();
+
+  function handleLogin({ user }) {
+    setUser(user);
+    setLoginRequired(!user);
   }
 
-  handleLogin({ user }) {
-    this.setState(
-      {
-        user: user,
-        loginRequired: false,
-      }
-    );
-  }
+  return (
+    <React.Fragment>
+      <CssBaseline />
+      <MuiThemeProvider theme={theme}>
+        <div className={classes.root}>
+          <AppHeader avatar={avatar} user={user} />
+          <Toolbar />
+          <Workspace
+              key={user}
+              api={audalaiApi}
+              user={user} />
 
-  render() {
-    const { classes } = this.props;
-    return (
-      <React.Fragment>
-        <CssBaseline />
-        <MuiThemeProvider theme={theme}>
-          <div className={classes.root}>
-            <AppHeader avatar={avatar} user={this.state.user} />
-            <Toolbar />
-            <Workspace
-                key={this.state.user}
-                api={audalaiApi}
-                user={this.state.user} />
-
-            <Login
-                open={this.state.loginRequired}
-                api={audalaiApi}
-                onLogin={({ user }) => this.handleLogin({ user })} />
-          </div>
-        </MuiThemeProvider>
-      </React.Fragment>
-    );
-  }
+          <Login
+              open={loginRequired}
+              api={audalaiApi}
+              onLogin={({ user }) => handleLogin({ user })} />
+        </div>
+      </MuiThemeProvider>
+    </React.Fragment>
+  )
 }
 
-export default withStyles(styles)(App);
+export default App;
