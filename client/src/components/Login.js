@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/styles';
+import { makeStyles } from '@material-ui/styles';
 
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -15,7 +15,7 @@ import Typography from '@material-ui/core/Typography';
 
 import guest from '../images/guest.svg'
 
-const styles = (theme) => ({
+const useStyles = makeStyles(theme => ({
   dialogContent: {
     display: 'flex',
     flexDirection: 'row',
@@ -36,197 +36,188 @@ const styles = (theme) => ({
     maxWidth: '350px',
     marginRight: '35px',
   },
-});
+}));
 
-class Login extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      loginModeIndex: 0,
-      email: null,
-      password: null,
-      confirmPassword: null,
-      confirmPasswordEntered: false,
-      authError: false,
-      createUserError: false,
-    }
+function Login(props) {
+  const classes = useStyles();
+  const [loginModeIndex, setLoginModeIndex] = useState(0);
+  const [email, setEmail] = useState(null);
+  const [password, setPassword] = useState(null);
+  const [confirmPassword, setConfirmPassword] = useState(null);
+  const [confirmPasswordEntered, setConfirmPasswordEntered] = useState(false);
+  const [authError, setAuthError] = useState(false);
+  const [createUserError, setCreateUserError] = useState(false);
+
+  function usingExistingAccount() {
+    return loginModeIndex === 0;
   }
 
-  usingExistingAccount() {
-    return this.state.loginModeIndex === 0;
+  function creatingNewAccount() {
+    return loginModeIndex === 1;
   }
 
-  creatingNewAccount() {
-    return this.state.loginModeIndex === 1;
+  function passwordsMatch() {
+    return password === confirmPassword;
   }
 
-  passwordsMatch() {
-    return this.state.password === this.state.confirmPassword;
+  function showConfirmPasswordError() {
+    return creatingNewAccount() && confirmPasswordEntered && !passwordsMatch();
   }
 
-  confirmPasswordError() {
-    return this.creatingNewAccount() && this.state.confirmPasswordEntered && !this.passwordsMatch();
+  function showAuthError() {
+    return usingExistingAccount() && authError;
   }
 
-  authError() {
-    return this.usingExistingAccount() && this.state.authError;
+  function showCreateUserError() {
+    return creatingNewAccount() && createUserError;
   }
 
-  createUserError() {
-    return this.creatingNewAccount() && this.state.createUserError;
-  }
-
-  helperText() {
-    if (this.confirmPasswordError()) {
+  function helperText() {
+    if (showConfirmPasswordError()) {
       return "Passwords don't match";
-    } else if (this.authError()) {
+    } else if (showAuthError()) {
       return "Login failed";
-    } else if (this.createUserError()) {
+    } else if (showCreateUserError()) {
       return "Something went wrong";
     }
   }
 
-  loginReady() {
+  function loginReady() {
     return true;
   }
 
-  guestReady() {
-    return this.usingExistingAccount();
+  function guestReady() {
+    return usingExistingAccount();
   }
 
-  handleLoginModeChange(event, newValue) {
-    this.setState({loginModeIndex: newValue});
+  function handleLoginModeChange(event, newValue) {
+    setLoginModeIndex(newValue);
   }
 
-  handleEmailChange(event) {
-    this.setState({email: event.target.value});
-    this.clearErrors();
+  function handleEmailChange(event) {
+    setEmail(event.target.value);
+    clearErrors();
   }
 
-  handlePasswordChange(event) {
-    this.setState({password: event.target.value});
-    this.clearErrors();
+  function handlePasswordChange(event) {
+    setPassword(event.target.value);
+    clearErrors();
   }
 
-  handleConfirmPasswordChange(event) {
-    this.setState({confirmPassword: event.target.value});
+  function handleConfirmPasswordChange(event) {
+    setConfirmPassword(event.target.value);
   }
 
-  clearErrors() {
-    this.setState({
-      authError: false,
-      createUserError: false,
-    })
+  function clearErrors() {
+    setAuthError(false);
+    setCreateUserError(false);
   }
 
-  handleBadLogin() {
-    this.setState({authError: true});
+  function handleBadLogin() {
+    setAuthError(true);
   }
 
-  handleCreateUserError() {
-    this.setState({createUserError: true})
+  function handleCreateUserError() {
+    setCreateUserError(true);
   }
 
-  checkPasswordsMatch(event) {
-    this.setState({confirmPasswordEntered: !!event.target.value});
+  function checkPasswordsMatch(event) {
+    setConfirmPasswordEntered(!!event.target.value);
   }
 
-  async signInGuest() {
-    const user = await this.props.api.loginAsGuest();
+  async function signInGuest() {
+    const user = await props.api.loginAsGuest();
     console.log("User: ", user);
-    this.props.onLogin({ user });
+    props.onLogin({ user });
   }
 
-  async signInUser() {
-    const user = await this.props.api.login(this.state.email, this.state.password);
+  async function signInUser() {
+    const user = await props.api.login(email, password);
     if (!user) {
       console.log("Login failed");
-      this.handleBadLogin();
+      handleBadLogin();
     } else {
       console.log("User: ", user);
-      this.props.onLogin({ user });
+      props.onLogin({ user });
     }
   }
 
-  async createUser() {
-    const user = await this.props.api.createUser("", this.state.email, this.state.password);
+  async function createUser() {
+    const user = await props.api.createUser("", email, password);
     if (!user) {
       console.log("Create user failed");
-      this.handleCreateUserError();
+      handleCreateUserError();
     } else {
       console.log("User: ", user);
-      this.props.onLogin({ user });
+      props.onLogin({ user });
     }
   }
 
-  render() {
-    const { classes } = this.props;
-    return (
-      <Dialog
-        open={this.props.open}
-        onClose={this.props.closeFn}
-        aria-labelledby="login-title"
-        fullWidth={false}
-        maxWidth='md'
-        >
-        <DialogTitle id="login-title">
-          Who are you?
-        </DialogTitle>
-        <DialogContent className={classes.dialogContent}>
-          <img className={classes.userImage} src={guest} alt="user"/>
-          <div className={classes.authForm}>
-            <Tabs value={this.state.loginModeIndex} onChange={(e, v) => this.handleLoginModeChange(e, v)}>
-              <Tab label="Sign in" />
-              <Tab label="Sign up" />
-            </Tabs>
-            <TextField
-                error={this.authError()}
-                label="email"
-                name="email"
-                onChange={(e) => this.handleEmailChange(e)} />
-            <TextField
-                error={this.authError()}
-                label="password"
-                name="password"
+  return (
+    <Dialog
+      open={props.open}
+      onClose={props.closeFn}
+      aria-labelledby="login-title"
+      fullWidth={false}
+      maxWidth='md'
+      >
+      <DialogTitle id="login-title">
+        Who are you?
+      </DialogTitle>
+      <DialogContent className={classes.dialogContent}>
+        <img className={classes.userImage} src={guest} alt="user"/>
+        <div className={classes.authForm}>
+          <Tabs value={loginModeIndex} onChange={(e, v) => handleLoginModeChange(e, v)}>
+            <Tab label="Sign in" />
+            <Tab label="Sign up" />
+          </Tabs>
+          <TextField
+              error={showAuthError()}
+              label="email"
+              name="email"
+              onChange={(e) => handleEmailChange(e)} />
+          <TextField
+              error={showAuthError()}
+              label="password"
+              name="password"
+              type="password"
+              onChange={(e) => handlePasswordChange(e)} />
+          <Collapse in={creatingNewAccount()}>
+            <TextField fullWidth={true}
+                error={showConfirmPasswordError()}
+                label="confirm password"
+                name="confirm_password"
                 type="password"
-                onChange={(e) => this.handlePasswordChange(e)} />
-            <Collapse in={this.creatingNewAccount()}>
-              <TextField fullWidth={true}
-                  error={this.confirmPasswordError()}
-                  label="confirm password"
-                  name="confirm_password"
-                  type="password"
-                  onChange={(e) => this.handleConfirmPasswordChange(e)}
-                  onBlur={(e) => this.checkPasswordsMatch(e)}
-                  />
-            </Collapse>
-            <Collapse in={!!this.helperText()}>
-              <Typography className={classes.helperText}>
-                {this.helperText()}
-              </Typography>
-            </Collapse>
-          </div>
-        </DialogContent>
-        <DialogActions>
-          {this.guestReady() && <Button onClick={(e) => {this.signInGuest()}}>
-            Continue as guest
-          </Button>}
-          {this.usingExistingAccount() && <Button
-              onClick={(e) => {this.signInUser()}}
-              variant="contained"
-              color="primary"
-              disabled={!this.loginReady()}
-              >Login</Button>}
-          {this.creatingNewAccount() && <Button
-              onClick={(e) => {this.createUser()}}
-              variant="contained"
-              color="primary"
-              disabled={!this.loginReady()}
-              >Sign Up</Button>}
-        </DialogActions>
-      </Dialog>
-    )
-  }
+                onChange={(e) => handleConfirmPasswordChange(e)}
+                onBlur={(e) => checkPasswordsMatch(e)}
+                />
+          </Collapse>
+          <Collapse in={!!helperText()}>
+            <Typography className={classes.helperText}>
+              {helperText()}
+            </Typography>
+          </Collapse>
+        </div>
+      </DialogContent>
+      <DialogActions>
+        {guestReady() && <Button onClick={(e) => {signInGuest()}}>
+          Continue as guest
+        </Button>}
+        {usingExistingAccount() && <Button
+            onClick={(e) => {signInUser()}}
+            variant="contained"
+            color="primary"
+            disabled={!loginReady()}
+            >Login</Button>}
+        {creatingNewAccount() && <Button
+            onClick={(e) => {createUser()}}
+            variant="contained"
+            color="primary"
+            disabled={!loginReady()}
+            >Sign Up</Button>}
+      </DialogActions>
+    </Dialog>
+  )
 }
 
 Login.propTypes = {
@@ -237,4 +228,4 @@ Login.propTypes = {
   )
 };
 
-export default withStyles(styles)(Login);
+export default Login;
