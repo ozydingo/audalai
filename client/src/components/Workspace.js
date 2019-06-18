@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 
 import FileList from './FileList'
-import AudalaiApi from '../lib/AudalaiApi'
+import { audalaiApi as api } from '../lib/AudalaiApi.js'
 
 const useStyles = makeStyles({
   workspace: {
@@ -40,7 +40,7 @@ function useFiles(props, setError) {
 
   async function fetchFilesData() {
     console.log("Fetching files");
-    props.api.getFiles().then(response => {
+    api.getFiles().then(response => {
       console.log(response);
       handleFilesData(response);
     }).catch(err => {
@@ -62,10 +62,6 @@ function useFiles(props, setError) {
   }, [props.user]);
 
   return files;
-}
-
-Workspace.propTypes = {
-  api: PropTypes.instanceOf(AudalaiApi),
 }
 
 export default Workspace;

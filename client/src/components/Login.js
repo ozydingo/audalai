@@ -12,6 +12,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
+import { audalaiApi as api } from '../lib/AudalaiApi.js'
 
 import guest from '../images/guest.svg'
 
@@ -126,13 +127,13 @@ function Login(props) {
   }
 
   async function signInGuest() {
-    const user = await props.api.loginAsGuest();
+    const user = await api.loginAsGuest();
     console.log("User: ", user);
     props.onLogin({ user });
   }
 
   async function signInUser() {
-    const user = await props.api.login(email, password);
+    const user = await api.login(email, password);
     if (!user) {
       console.log("Login failed");
       handleBadLogin();
@@ -143,7 +144,7 @@ function Login(props) {
   }
 
   async function createUser() {
-    const user = await props.api.createUser("", email, password);
+    const user = await api.createUser("", email, password);
     if (!user) {
       console.log("Create user failed");
       handleCreateUserError();

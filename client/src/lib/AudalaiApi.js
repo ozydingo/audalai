@@ -1,3 +1,4 @@
+import CONFIG from '../config.js';
 const axios = require('axios');
 
 class AudalaiApi {
@@ -68,4 +69,5 @@ class AudalaiApi {
   }
 }
 
-export default AudalaiApi;
+const audalaiApi = new AudalaiApi(CONFIG.API_ENDPOINT);
+export { AudalaiApi, audalaiApi };
