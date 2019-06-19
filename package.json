@@ -7,6 +7,7 @@
     "disable-assets": "mkdir -p public/assets && touch public/assets/manifest.yml",
     "build": "cd client && npm run build && cd .. && cp -a client/build/. public/ && npm run disable-assets",
     "postinstall": "npm run install-client && npm run build && echo 'Client built!'",
-    "install-client": "cd client && npm install && cd .."
+    "install-client": "cd client && npm install && cd ..",
+    "start-client": "cd client && npm start"
   }
 }
