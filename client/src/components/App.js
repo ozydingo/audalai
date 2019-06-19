@@ -10,7 +10,6 @@ import AppHeader from './AppHeader.js'
 import Workspace from './Workspace.js'
 import Login from './Login.js'
 
-import CONFIG from '../config.js';
 import { audalaiApi } from '../lib/AudalaiApi'
 
 const useStyles = makeStyles(theme => ({
