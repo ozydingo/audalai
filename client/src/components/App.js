@@ -50,17 +50,14 @@ const theme = createMuiTheme({
 
 function App(props) {
   const [user, setUser] = useState(null);
-  const [loginRequired, setLoginRequired] = useState(true);
   const classes = useStyles();
 
   function handleLogin({ user }) {
     setUser(user);
-    setLoginRequired(!user);
   }
 
   function handleLogout() {
     setUser(null);
-    setLoginRequired(true);
   }
 
   return (
@@ -79,7 +76,7 @@ function App(props) {
               user={user} />
 
           <Login
-              open={loginRequired}
+              open={!user}
               api={audalaiApi}
               onLogin={({ user }) => handleLogin({ user })} />
         </div>
