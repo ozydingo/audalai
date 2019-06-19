@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types';
 
 import Fade from '@material-ui/core/Fade';
 
@@ -12,5 +13,12 @@ function FileContents(props) {
     </div>
   );
 }
+
+FileContents.propTypes = {
+  open: PropTypes.bool,
+  file: PropTypes.shape({
+    name: PropTypes.string,
+  })
+};
 
 export default FileContents;

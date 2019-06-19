@@ -1,5 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/styles';
+import PropTypes from 'prop-types';
 
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -92,5 +93,12 @@ function AppHeader(props) {
     </AppBar>
   );
 }
+
+AppHeader.propTypes = {
+  user: PropTypes.shape({
+    id: PropTypes.string,
+  }),
+  avatar: PropTypes.any,
+};
 
 export default AppHeader;

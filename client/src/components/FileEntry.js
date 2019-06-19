@@ -1,5 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/styles';
+import PropTypes from 'prop-types';
 
 import Paper from '@material-ui/core/Paper';
 import FileContents from './FileContents'
@@ -66,5 +67,18 @@ function FileEntry(props) {
     </Paper>
   );
 }
+
+const fileType = PropTypes.shape({
+  id: PropTypes.string,
+  name: PropTypes.string,
+});
+
+FileEntry.propTypes = {
+  file: fileType,
+  activeFile: fileType,
+  activeFileOpen: PropTypes.bool,
+  openFile: PropTypes.func,
+  closeFile: PropTypes.func,
+};
 
 export default FileEntry;

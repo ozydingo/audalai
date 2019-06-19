@@ -64,4 +64,10 @@ function useFiles(props, setError) {
   return files;
 }
 
+Workspace.propTypes = {
+  user: PropTypes.shape({
+    id: PropTypes.string
+  })
+};
+
 export default Workspace;
