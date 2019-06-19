@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import PropTypes from 'prop-types';
 
@@ -6,8 +6,11 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import CONFIG from '../config.js'
+import { audalaiApi as api } from '../lib/AudalaiApi.js'
 
 import logo from '../images/logo.svg';
+
+import Logout from './Logout.js'
 
 const titleText = CONFIG.ENV === "production" ? "audalai" : "development"
 
@@ -73,6 +76,21 @@ function userName(user) {
 
 function AppHeader(props) {
   const classes = useStyles();
+  const [logoutIsOpen, setLogoutIsOpen] = useState(false);
+
+  function confirmLogout() {
+    setLogoutIsOpen(true);
+  }
+
+  function handleCloseLogout() {
+    setLogoutIsOpen(false);
+  }
+
+  async function handleLogout() {
+    await api.logout()
+    handleCloseLogout();
+    props.onLogout();
+  }
 
   return (
     <AppBar className={classes.appBar}>
@@ -84,12 +102,13 @@ function AppHeader(props) {
         </div>
         <div className={classes.toolbarSpacer}>&nbsp;</div>
         <div className={classes.accountControls}>
-          <div className={classes.userImage}>
+          <div className={classes.userImage} onClick={confirmLogout}>
             <img className={classes.userAvatar} src={props.avatar} alt="user"/>
             <Typography className={classes.userName}>{userName(props.user)}</Typography>
           </div>
         </div>
       </Toolbar>
+      <Logout open={logoutIsOpen} onClose={handleCloseLogout} onLogout={handleLogout} />
     </AppBar>
   );
 }

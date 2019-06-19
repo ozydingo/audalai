@@ -58,12 +58,20 @@ function App(props) {
     setLoginRequired(!user);
   }
 
+  function handleLogout() {
+    setUser(null);
+    setLoginRequired(true);
+  }
+
   return (
     <React.Fragment>
       <CssBaseline />
       <MuiThemeProvider theme={theme}>
         <div className={classes.root}>
-          <AppHeader avatar={avatar} user={user} />
+          <AppHeader
+              avatar={avatar}
+              user={user}
+              onLogout={handleLogout} />
           <Toolbar />
           <Workspace
               key={user}
