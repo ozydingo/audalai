@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -52,6 +52,14 @@ function App(props) {
   const [user, setUser] = useState(null);
   const classes = useStyles();
 
+  // Try to reauthenticate on first page load
+  useEffect(() => {reauthenticate()}, [])
+
+  async function reauthenticate() {
+    const user = await audalaiApi.reauthenticate();
+    setUser(user);
+  }
+
   function handleLogin({ user }) {
     setUser(user);
   }
@@ -76,7 +84,7 @@ function App(props) {
               user={user} />
 
           <Login
-              open={!user}
+              open={!audalaiApi.isAuthenticated()}
               api={audalaiApi}
               onLogin={({ user }) => handleLogin({ user })} />
         </div>

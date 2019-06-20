@@ -3,6 +3,10 @@ module Types
     # Add root-level fields here.
     # They will be entry points for queries on your schema.
 
+    field :authenticate, SelfType, null: true do
+      description "Check authentication and get user details"
+    end
+
     field :user, UserType, null: true do
       description "An Audalai user"
       argument :id, ID, required: true
@@ -17,6 +21,10 @@ module Types
     end
 
     field :audios, [AudioType], null: false
+
+    def authenticate
+      current_user
+    end
 
     def user(id:)
       User.find(id)

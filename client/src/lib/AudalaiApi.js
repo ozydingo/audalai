@@ -4,7 +4,24 @@ const axios = require('axios');
 class AudalaiApi {
   constructor(endpoint) {
     this.endpoint = endpoint;
-    this.token = null;
+    this.token = this.getToken();
+  }
+
+  isAuthenticated() {
+    return this.token !== null;
+  }
+
+  reauthenticate() {
+    if (this.token === null) { return null; }
+    return axios.post(
+      `${this.endpoint}/graphql?query=query{authenticate{id name nickname}}`,
+      null,
+      {headers: this.authHeaders()}
+    ).then(result => {
+      const user = this.handleAuthenticationResponse(result);
+      if (user === null) { this.clearToken(); }
+      return user;
+    })
   }
 
   loginAsGuest() {
@@ -12,7 +29,7 @@ class AudalaiApi {
       `${this.endpoint}/graphql?query=mutation{signInGuest{ user{id name nickname} token }}`
     ).then(result => {
       const { signInGuest: { token, user }  = {}} = this.handleLoginResponse(result);
-      this.token = token;
+      this.setToken(token);
       return user;
     });
   }
@@ -22,7 +39,7 @@ class AudalaiApi {
       `${this.endpoint}/graphql?query=mutation{ signInUser(login:{email:"${email}", password:"${password}"}){ user{id name nickname} token } }`
     ).then(result => {
       const { signInUser: { token, user } = {}} = this.handleLoginResponse(result);
-      this.token = token;
+      this.setToken(token);
       return user;
     });
   }
@@ -31,7 +48,7 @@ class AudalaiApi {
     return axios.post(
       `${this.endpoint}/graphql?query=mutation{signOutUser{message}}`
     ).then(result => {
-      this.token = null;
+      this.clearToken();
     });
   }
 
@@ -60,12 +77,39 @@ class AudalaiApi {
     }
   }
 
+  handleAuthenticationResponse(response) {
+    if (response.data.errors) {
+      return null;
+    } else {
+      return response.data.data.authenticate;
+    }
+  }
+
   handleLoginResponse(response) {
     if (response.data.errors) {
       return {token: null, user: null};
     } else {
       return response.data.data;
     }
+  }
+
+  setToken(token) {
+    if (token !== null) {
+      this.token = token;
+      window.localStorage.setItem('audalai-jwt', token);
+    } else {
+      this.clearToken();
+    }
+  }
+
+  clearToken() {
+    this.token = null;
+    window.localStorage.removeItem('audalai-jwt');
+  }
+
+  getToken() {
+    this.token = window.localStorage.getItem('audalai-jwt');
+    return this.token;
   }
 }
 
